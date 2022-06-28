@@ -19,7 +19,7 @@ class BlogCategoryFactory extends Factory
         return [
             'slug' => Str::slug($title),
             'title' => $title,
-            'description' => $this->faker->text,
+            'description' => $this->faker->realText,
         ];
     }
 }

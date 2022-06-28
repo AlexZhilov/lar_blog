@@ -18,16 +18,22 @@ class BlogPostFactory extends Factory
     public function definition()
     {
         $title = $this->faker->unique()->sentence(random_int(1,5));
+        $content = $this->faker->realText();
+        $is_published = random_int(1,10) > 1;
+        $created_at = $this->faker->dateTimeBetween('-5 weeks', '-1 weeks');
+
         return [
             'category_id' => BlogCategory::get()->random()->id,
             'user_id' => User::get()->random()->id,
             'slug' => Str::slug($title),
             'title' => $title,
-            'excerpt' => $this->faker->text,
-            'content_raw' => $this->faker->text,
-            'content_html' => $this->faker->randomHtml(),
-            'is_published' => true
-
+            'excerpt' => Str::limit($content, 255),
+            'content_raw' => $content,
+            'content_html' => $content,
+            'is_published' => $is_published,
+            'published_at' => $is_published ? $this->faker->dateTimeBetween('-2 weeks', '-1 days') : null,
+            'created_at' => $created_at,
+            'updated_at' => $created_at,
         ];
     }
 }
