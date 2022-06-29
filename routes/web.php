@@ -13,14 +13,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::group(['namespace' => 'blog', 'prefix' => 'blog'], function(){
+/******* SITE ******/
+/* BLOG */
+Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function(){
 
     Route::resource('posts', 'PostController')->names('blog.posts');
 
+});
+
+/****** ADMIN ******/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admin'], function(){
+
+    /* BLOG */
+    Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function(){
+        Route::resource('categories', 'CategoryController')
+            ->except(['show'])
+            ->names('admin.blog.categories');
+    });
+
+
+});
+
+
+
+Route::get('/', function () {
+    return view('welcome');
 });
 
 Auth::routes();
