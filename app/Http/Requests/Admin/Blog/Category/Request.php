@@ -23,11 +23,12 @@ class Request extends FormRequest
      */
     public function rules()
     {
+        $id = $this->category->id ?? '';
         return [
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
-            'parent_id' => 'integer',
-            'description' => 'string'
+            'title' => ['required','string','max:255'],
+            'slug' => ["unique:blog_categories,slug,{$id}",'alpha_dash','max:255'],
+            'parent_id' => ['required','integer','exists:blog_categories'],
+            'description' => ['required','min:5'],
         ];
     }
 }

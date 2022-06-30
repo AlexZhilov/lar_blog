@@ -6,16 +6,15 @@
         <div class="row">
             <div class="col-12">
 
-                <form action="{{ route('admin.blog.categories.update', $category->id) }}" method="post" class="row g-3">
+                <form action="{{ $category->exists ? route('admin.blog.categories.update', $category->id) : route('admin.blog.categories.store') }}" method="post" class="row g-3">
                     @csrf
-                    @method('patch')
-
+                    @if($category->exists) @method('PATCH') @endif
                     <div class="col-8">
-                        @include('admin.blog.category.includes.edit_main_col')
+                        @include('admin.blog.category.includes.edit_main')
                     </div>
 
                     <div class="col-3">
-                        @include('admin.blog.category.includes.edit_add_col')
+                        @include('admin.blog.category.includes.edit_sidebar')
                     </div>
 
                 </form>

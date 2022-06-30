@@ -9,7 +9,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CategoryController extends BaseController
@@ -28,23 +27,27 @@ class CategoryController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
+     * @param BlogCategory $category
      * @return Application|Factory|View
      */
-    public function create()
+    public function create(BlogCategory $category)
     {
         $categories = BlogCategory::all();
-        return view('admin.blog.category.create', compact('categories'));
+        return view('admin.blog.category.store', compact('categories', 'category'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return void
+     * @param CategoryRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $category = BlogCategory::create( $request->validated() );
+        flash("Категория '{$category->title}' создана.")->success();
+
+        return redirect()->route('admin.blog.categories.edit', $category->id);
     }
 
     /**
@@ -55,23 +58,24 @@ class CategoryController extends BaseController
      */
     public function edit(BlogCategory $category)
     {
-        $allCategories = BlogCategory::all();
-        return view('admin.blog.category.edit', compact('category', 'allCategories'));
+        $categories = BlogCategory::all();
+        return view('admin.blog.category.store', compact('category', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param CategoryRequest $request
      * @param BlogCategory $category
      * @return RedirectResponse
      */
     public function update(CategoryRequest $request, BlogCategory $category)
     {
-        $data = $request->validated();
-        $category->update($data);
+        $category->update( $request->validated() );
         flash("Категория '{$category->title}' обновлена.")->success();
-        return redirect()->route('admin.blog.categories.index');
+
+//        return redirect()->route('admin.blog.categories.index');
+        return redirect()->route('admin.blog.categories.edit', $category->id);
     }
 
     /**

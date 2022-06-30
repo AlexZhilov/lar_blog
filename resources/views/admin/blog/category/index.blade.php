@@ -2,8 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-12">
+        <div class="row card">
+            <div class="col-12 card-body">
+
                 <a href="{{ route('admin.blog.categories.create') }}" class="btn btn-primary">Create category</a>
                 
                 <table class="table">
