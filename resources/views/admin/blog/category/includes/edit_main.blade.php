@@ -21,9 +21,8 @@
                 <label for="category_id" class="form-label @error('parent_id') text-danger @enderror">Родитель</label>
                 <select id="category_id" class="form-select @error('parent_id') is-invalid @enderror" name="parent_id">
                     <option>Choose...</option>
-                    @foreach($categories as $item)
-                        @php /** @var $item \App\Models\Blog\BlogCategory*/ @endphp
-                        <option {{ $category->parent_id == $item->id || old('parent_id') == $item->id ? 'selected' : ''}} value="{{ $item->id }}">{{ $item->title }}</option>
+                    @foreach($categories as $id => $title)
+                        <option {{ $category->parent_id == $id || old('parent_id') == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
                     @endforeach
                 </select>
             </div>

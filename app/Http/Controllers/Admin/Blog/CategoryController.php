@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\Blog;
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Admin\Blog\Category\Request as CategoryRequest;
 use App\Models\Blog\BlogCategory;
+use App\Repositories\BlogCategoryRepository;
+use App\Services\Blog\CategoryService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -13,6 +15,19 @@ use Illuminate\Http\Response;
 
 class CategoryController extends BaseController
 {
+
+    private $blogCategoryRepository;
+
+    public function __construct(
+        CategoryService $service,
+        BlogCategoryRepository $blogCategoryRepository
+    )
+    {
+        parent::__construct();
+        $this->service = $service;
+        $this->blogCategoryRepository = $blogCategoryRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +35,9 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = BlogCategory::with('parent')->paginate(10);
-        return view('admin.blog.category.index', compact('categories'));
+        return view('admin.blog.category.index', [
+            'categories' => $this->blogCategoryRepository->getPostsWithParentAndPaginate()
+        ]);
     }
 
     /**
@@ -32,7 +48,7 @@ class CategoryController extends BaseController
      */
     public function create(BlogCategory $category)
     {
-        $categories = BlogCategory::all();
+        $categories = $this->blogCategoryRepository->getAllForDropList();
         return view('admin.blog.category.store', compact('categories', 'category'));
     }
 
@@ -44,9 +60,7 @@ class CategoryController extends BaseController
      */
     public function store(CategoryRequest $request)
     {
-        $category = BlogCategory::create( $request->validated() );
-        flash("Категория '{$category->title}' создана.")->success();
-
+        $category = $this->service->store( $request->validated() );
         return redirect()->route('admin.blog.categories.edit', $category->id);
     }
 
@@ -58,7 +72,7 @@ class CategoryController extends BaseController
      */
     public function edit(BlogCategory $category)
     {
-        $categories = BlogCategory::all();
+        $categories = $this->blogCategoryRepository->getAllForDropList();
         return view('admin.blog.category.store', compact('category', 'categories'));
     }
 
@@ -71,10 +85,8 @@ class CategoryController extends BaseController
      */
     public function update(CategoryRequest $request, BlogCategory $category)
     {
-        $category->update( $request->validated() );
-        flash("Категория '{$category->title}' обновлена.")->success();
+        $this->service->update( $request->validated(), $category);
 
-//        return redirect()->route('admin.blog.categories.index');
         return redirect()->route('admin.blog.categories.edit', $category->id);
     }
 
