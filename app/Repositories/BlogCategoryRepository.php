@@ -32,9 +32,13 @@ class BlogCategoryRepository extends CoreRepository
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function getPostsWithParentAndPaginate($perPage = 10)
+    public function getAllWithParentAndPaginate($perPage = 10)
     {
-        return $this->model()->with('parent')->paginate($perPage);
+        return $this->model()
+//                ->select(['id','slug','title'])
+                ->orderBy('id', 'DESC')
+                ->with('parent')
+                ->paginate($perPage);
     }
 
     /**

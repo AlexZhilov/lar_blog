@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-12">
 
-                <form action="{{ $category->exists ? route('admin.blog.categories.update', $category->id) : route('admin.blog.categories.store') }}" method="post" class="row g-3">
+                <form action="{{ $category->exists ? route('admin.blog.category.update', $category->id) : route('admin.blog.category.store') }}" method="post" class="row g-3">
                     @csrf
                     @if($category->exists) @method('PATCH') @endif
                     <div class="col-8">

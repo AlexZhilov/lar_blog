@@ -36,7 +36,7 @@ class CategoryController extends BaseController
     public function index()
     {
         return view('admin.blog.category.index', [
-            'categories' => $this->blogCategoryRepository->getPostsWithParentAndPaginate()
+            'categories' => $this->blogCategoryRepository->getAllWithParentAndPaginate()
         ]);
     }
 
@@ -61,7 +61,7 @@ class CategoryController extends BaseController
     public function store(CategoryRequest $request)
     {
         $category = $this->service->store( $request->validated() );
-        return redirect()->route('admin.blog.categories.edit', $category->id);
+        return redirect()->route('admin.blog.category.edit', $category->id);
     }
 
     /**
@@ -87,17 +87,18 @@ class CategoryController extends BaseController
     {
         $this->service->update( $request->validated(), $category);
 
-        return redirect()->route('admin.blog.categories.edit', $category->id);
+        return redirect()->route('admin.blog.category.edit', $category->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param BlogCategory $category
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(BlogCategory $category)
     {
-        //
+        $this->service->delete($category);
+        return redirect()->route('admin.blog.category.index');
     }
 }

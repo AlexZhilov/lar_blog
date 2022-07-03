@@ -5,7 +5,7 @@
         <div class="row card">
             <div class="col-12 card-body">
 
-                <a href="{{ route('admin.blog.categories.create') }}" class="btn btn-primary">Create category</a>
+                <a href="{{ route('admin.blog.category.create') }}" class="btn btn-primary">Create category</a>
                 
                 <table class="table">
                     <thead>
@@ -23,7 +23,7 @@
                         <tr>
                             <th scope="row">{{ $category->id }}.</th>
                             <td>
-                                <a href="{{ route('admin.blog.categories.edit', $category->id) }}">{{ $category->title }}</a>
+                                <a href="{{ route('admin.blog.category.edit', $category->id) }}">{{ $category->title }}</a>
                                 <span class="badge bg-primary rounded-pill">---</span>
                             </td>
                             <td>{{ $category->updated_at }}</td>

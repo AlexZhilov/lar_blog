@@ -21,4 +21,10 @@ class CategoryService
         $category->update($data);
         flash("Категория '{$category->title}' обновлена.")->success();
     }
+
+    public function delete(BlogCategory $category)
+    {
+        $category->delete();
+        flash("Категория '{$category->title}' удалена.");
+    }
 }

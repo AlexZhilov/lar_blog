@@ -26,9 +26,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admi
 
     /* BLOG */
     Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function(){
-        Route::resource('categories', 'CategoryController')
+        /* CATEGORY */
+        Route::resource('category', 'CategoryController')
             ->except(['show'])
-            ->names('admin.blog.categories');
+            ->names('admin.blog.category');
+        /* POST */
+        Route::resource('post', 'PostController')
+            ->except('show')
+            ->names('admin.blog.post');
     });
 
 

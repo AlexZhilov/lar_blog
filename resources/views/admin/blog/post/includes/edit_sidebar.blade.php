@@ -1,27 +1,27 @@
-@php /** @var $category \App\Models\Blog\BlogCategory */ @endphp
-@if($category->exists)
+@php /** @var $post \App\Models\Blog\BlogPost */ @endphp
+@if($post->exists)
 
     <div class="card">
         <div class="card-body">
             <label for="disabledTextInput" class="form-label">Создано:</label>
-            <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $category->created_at }}" disabled>
+            <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->created_at }}" disabled>
 
-            @if( $category->created_at != $category->updated_at)
+            @if( $post->created_at != $post->updated_at)
                 <label for="disabledTextInput" class="form-label">Редактировано:</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $category->updated_at }}" disabled>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->updated_at }}" disabled>
             @endif
         </div>
     </div>
 
 @endif
 
-<div class="card {{ $category->exists ? 'mt-2' : '' }}">
+<div class="card {{ $post->exists ? 'mt-2' : '' }}">
     <div class="card-body text-center">
         <button type="submit" class="btn btn-primary">Сохранить</button>
 
-        @if($category->exists)
+        @if($post->exists)
 
-            <form action="{{ route('admin.blog.category.destroy', $category->id) }}">
+            <form action="{{ route('admin.blog.category.destroy', $post->id) }}">
                 @method('delete')
                 @csrf
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCatModal">Удалить</button>
@@ -40,7 +40,7 @@
 
                         <!-- Modal body -->
                         <div class="modal-body">
-                            Удалить категорию <b>"{{ $category->title }}"</b>?
+                            Удалить категорию <b>"{{ $post->title }}"</b>?
                         </div>
 
                         <!-- Modal footer -->
