@@ -22,7 +22,7 @@
                 <select id="category_id" class="form-select @error('parent_id') is-invalid @enderror" name="parent_id">
                     <option>Choose...</option>
                     @foreach($categories as $id => $title)
-                        <option {{ $category->parent_id == $id || old('parent_id') == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
+                        <option {{ old('parent_id') == $id || $category->parent_id == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
                     @endforeach
                 </select>
             </div>

@@ -22,7 +22,8 @@
                 <select id="category_id" class="form-select @error('category_id') is-invalid @enderror" name="category_id">
                     <option>Choose...</option>
                     @foreach($categories as $id => $title)
-                        <option {{ $post->category->id == $id || old('category_id') == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
+                        {{ $CategoryId = $post->exists ? $post->category->id : old('category_id') }}
+                        <option {{ $CategoryId == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
                     @endforeach
                 </select>
             </div>

@@ -6,6 +6,12 @@ namespace App\Repositories;
 use App\Models\Blog\BlogPost as Model;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
+/**
+ * Class BlogPostRepository
+ * @package App\Repositories
+ *
+ * @method Model model()
+ */
 class BlogPostRepository extends CoreRepository
 {
 

@@ -18,8 +18,7 @@ class PostService
 
     public function update($data, BlogPost $post)
     {
-        dd($data
-        );
+        dd($data, __METHOD__);
         $post->update($data);
         flash("Пост '{$post->title}' обновлен.")->success();
     }

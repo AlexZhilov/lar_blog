@@ -3,7 +3,6 @@
 
 namespace App\Repositories;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -33,7 +32,7 @@ abstract class CoreRepository
     abstract protected function getModel();
 
     /**
-     * @return Application|Model|mixed
+     * @return Model
      */
     protected function model()
     {

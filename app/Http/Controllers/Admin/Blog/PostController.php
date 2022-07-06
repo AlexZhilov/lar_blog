@@ -48,11 +48,13 @@ class PostController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @param BlogPost $post
+     * @return Application|Factory|View
      */
-    public function create()
+    public function create(BlogPost $post)
     {
-        //
+        $categories = $this->blogCategoryRepository->getAllForDropList();
+        return view('admin.blog.post.store', compact('categories', 'post'));
     }
 
     /**
@@ -63,7 +65,7 @@ class PostController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        dd(__METHOD__);
     }
 
     /**
@@ -74,7 +76,7 @@ class PostController extends BaseController
      */
     public function show($id)
     {
-        //
+        dd(__METHOD__);
     }
 
     /**
@@ -98,7 +100,7 @@ class PostController extends BaseController
      */
     public function update(PostRequest $request, BlogPost $post)
     {
-        dd(123);
+        dd(__METHOD__);
         $this->service->update( $request->validated(), $post );
         return redirect()->route('admin.blog.post.index', $post->id);
     }
@@ -111,6 +113,6 @@ class PostController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        dd(__METHOD__);
     }
 }
