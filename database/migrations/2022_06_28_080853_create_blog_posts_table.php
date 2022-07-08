@@ -17,15 +17,15 @@ class CreateBlogPostsTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
 
             $table->string('slug')->unique();
             $table->string('title');
 
             $table->text('excerpt')->nullable();
 
-            $table->text('content_raw');
-            $table->text('content_html');
+            $table->text('content_raw')->nullable();
+            $table->text('content_html')->nullable();
 
             $table->boolean('is_published')->default(false);
 

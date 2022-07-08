@@ -12,14 +12,13 @@
                     <div class="col-8">
                         @include('admin.blog.post.includes.edit_main')
                     </div>
-
                     <div class="col-3">
                         @include('admin.blog.post.includes.edit_sidebar')
                     </div>
-
                 </form>
 
             </div>
+            @include('admin.blog.post.includes.delete_bar')
         </div>
     </div>
 @endsection

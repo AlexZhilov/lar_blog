@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 /* BLOG */
 Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function(){
 
-    Route::resource('posts', 'PostController')->names('blog.posts');
+//    Route::resource('posts', 'PostController')->names('blog.posts');
 
 });
 

@@ -10,6 +10,7 @@ class PostService
 {
     public function store($data)
     {
+        $data['user_id'] = auth()->user()->id;
         $post = (new BlogPost)->create($data);
         flash("Пост '{$post->title}' создан.")->success();
 
@@ -18,7 +19,6 @@ class PostService
 
     public function update($data, BlogPost $post)
     {
-        dd($data, __METHOD__);
         $post->update($data);
         flash("Пост '{$post->title}' обновлен.")->success();
     }

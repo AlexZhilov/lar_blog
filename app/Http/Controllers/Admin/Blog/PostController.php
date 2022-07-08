@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Blog;
 
 use App\Http\Controllers\Admin\BaseController;
+use App\Http\Requests\Admin\Blog\Post\Request as PostRequest;
 use App\Models\Blog\BlogPost;
 use App\Repositories\BlogCategoryRepository;
 use App\Repositories\BlogPostRepository;
@@ -11,8 +12,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use App\Http\Requests\Admin\Blog\Post\Request as PostRequest;
 use Illuminate\Http\Response;
 
 class PostController extends BaseController
@@ -60,12 +59,13 @@ class PostController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return Response
+     * @param PostRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        dd(__METHOD__);
+        $post = $this->service->store( $request->validated() );
+        return redirect()->route('admin.blog.post.edit', $post->id);
     }
 
     /**
@@ -100,19 +100,19 @@ class PostController extends BaseController
      */
     public function update(PostRequest $request, BlogPost $post)
     {
-        dd(__METHOD__);
         $this->service->update( $request->validated(), $post );
-        return redirect()->route('admin.blog.post.index', $post->id);
+        return redirect()->route('admin.blog.post.edit', $post->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param BlogPost $post
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(BlogPost $post)
     {
-        dd(__METHOD__);
+        $this->service->delete($post);
+        return redirect()->route('admin.blog.post.index');
     }
 }
