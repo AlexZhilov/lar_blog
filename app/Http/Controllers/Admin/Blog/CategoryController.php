@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Admin\Blog;
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Admin\Blog\Category\Request as CategoryRequest;
-use App\Models\Blog\BlogCategory;
-use App\Repositories\BlogCategoryRepository;
+use App\Models\Blog\Category;
+use App\Repositories\Blog\CategoryRepository as BlogCategoryRepository;
 use App\Services\Blog\CategoryService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 
 class CategoryController extends BaseController
 {
@@ -43,10 +42,10 @@ class CategoryController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @param BlogCategory $category
+     * @param Category $category
      * @return Application|Factory|View
      */
-    public function create(BlogCategory $category)
+    public function create(Category $category)
     {
         $categories = $this->blogCategoryRepository->getAllForDropList();
         return view('admin.blog.category.store', compact('categories', 'category'));
@@ -68,10 +67,10 @@ class CategoryController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param BlogCategory $category
+     * @param Category $category
      * @return Application|Factory|View
      */
-    public function edit(BlogCategory $category)
+    public function edit(Category $category)
     {
         $categories = $this->blogCategoryRepository->getAllForDropList();
         return view('admin.blog.category.store', compact('category', 'categories'));
@@ -81,10 +80,10 @@ class CategoryController extends BaseController
      * Update the specified resource in storage.
      *
      * @param CategoryRequest $request
-     * @param BlogCategory $category
+     * @param Category $category
      * @return RedirectResponse
      */
-    public function update(CategoryRequest $request, BlogCategory $category)
+    public function update(CategoryRequest $request, Category $category)
     {
         dd(__METHOD__);
         $this->service->update($request->validated(), $category);
@@ -94,12 +93,11 @@ class CategoryController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param BlogCategory $category
+     * @param Category $category
      * @return RedirectResponse
      */
-    public function destroy(BlogCategory $category)
+    public function destroy(Category $category)
     {
-        dd(__METHOD__);
         $this->service->delete($category);
         return redirect()->route('admin.blog.category.index');
     }

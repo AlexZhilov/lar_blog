@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Blog\BlogPost;
+use App\Models\Blog\Post;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -32,7 +32,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  *
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read Collection|BlogPost[] $posts
+ * @property-read Collection|Post[] $posts
  * @property-read int|null $posts_count
  * @property-read Collection|PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
@@ -89,6 +89,6 @@ class User extends Authenticatable
      */
     public function posts()
     {
-        return $this->hasMany(BlogPost::class, 'user_id');
+        return $this->hasMany(Post::class, 'user_id');
     }
 }

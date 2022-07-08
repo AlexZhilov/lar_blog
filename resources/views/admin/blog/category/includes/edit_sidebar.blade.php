@@ -1,4 +1,4 @@
-@php /** @var $category \App\Models\Blog\BlogCategory */ @endphp
+@php /** @var $category \App\Models\Blog\Category */ @endphp
 @if($category->exists)
 
     <div class="card">

@@ -1,18 +1,19 @@
 <?php
 
 
-namespace App\Repositories;
+namespace App\Repositories\Blog;
 
-use App\Models\Blog\BlogPost as Model;
+use App\Models\Blog\Post as Model;
+use App\Repositories\CoreRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
- * Class BlogPostRepository
+ * Class PostRepository
  * @package App\Repositories
  *
  * @method Model model()
  */
-class BlogPostRepository extends CoreRepository
+class PostRepository extends CoreRepository
 {
 
     protected function getModel()

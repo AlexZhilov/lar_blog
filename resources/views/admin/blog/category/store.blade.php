@@ -1,4 +1,4 @@
-@php /** @var $category \App\Models\Blog\BlogCategory */ @endphp
+@php /** @var $category \App\Models\Blog\Category */ @endphp
 @extends('layouts.app')
 
 @section('content')

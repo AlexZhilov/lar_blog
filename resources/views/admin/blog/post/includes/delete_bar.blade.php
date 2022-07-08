@@ -1,4 +1,4 @@
-@php /** @var $post \App\Models\Blog\BlogPost */ @endphp
+@php /** @var $post \App\Models\Blog\Post */ @endphp
 
 @if($post->exists)
 

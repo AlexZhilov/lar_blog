@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin\Blog;
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Admin\Blog\Post\Request as PostRequest;
-use App\Models\Blog\BlogPost;
-use App\Repositories\BlogCategoryRepository;
-use App\Repositories\BlogPostRepository;
+use App\Models\Blog\Post;
+use App\Repositories\Blog\CategoryRepository as BlogCategoryRepository;
+use App\Repositories\Blog\PostRepository as BlogPostRepository;
 use App\Services\Blog\PostService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -47,10 +47,10 @@ class PostController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @param BlogPost $post
+     * @param Post $post
      * @return Application|Factory|View
      */
-    public function create(BlogPost $post)
+    public function create(Post $post)
     {
         $categories = $this->blogCategoryRepository->getAllForDropList();
         return view('admin.blog.post.store', compact('categories', 'post'));
@@ -82,10 +82,10 @@ class PostController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param BlogPost $post
+     * @param Post $post
      * @return Application|Factory|View
      */
-    public function edit(BlogPost $post)
+    public function edit(Post $post)
     {
         $categories = $this->blogCategoryRepository->getAllForDropList();
         return view('admin.blog.post.store', compact('post', 'categories'));
@@ -95,11 +95,12 @@ class PostController extends BaseController
      * Update the specified resource in storage.
      *
      * @param PostRequest $request
-     * @param BlogPost $post
+     * @param Post $post
      * @return RedirectResponse
      */
-    public function update(PostRequest $request, BlogPost $post)
+    public function update(PostRequest $request, Post $post)
     {
+//        dd($request->all());
         $this->service->update( $request->validated(), $post );
         return redirect()->route('admin.blog.post.edit', $post->id);
     }
@@ -107,10 +108,10 @@ class PostController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param BlogPost $post
+     * @param Post $post
      * @return RedirectResponse
      */
-    public function destroy(BlogPost $post)
+    public function destroy(Post $post)
     {
         $this->service->delete($post);
         return redirect()->route('admin.blog.post.index');

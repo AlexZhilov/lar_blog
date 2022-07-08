@@ -1,4 +1,4 @@
-@php /** @var $category \App\Models\Blog\BlogCategory */ @endphp
+@php /** @var $category \App\Models\Blog\Category */ @endphp
 <div class="card">
     <div class="card-body">
         <div class="col">

@@ -2,12 +2,12 @@
 
 namespace Database\Factories\Blog;
 
-use App\Models\Blog\BlogCategory;
+use App\Models\Blog\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class BlogPostFactory extends Factory
+class PostFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -23,7 +23,7 @@ class BlogPostFactory extends Factory
         $created_at = $this->faker->dateTimeBetween('-5 weeks', '-1 weeks');
 
         return [
-            'category_id' => BlogCategory::get()->random()->id,
+            'category_id' => Category::get()->random()->id,
             'user_id' => User::get()->random()->id,
             'slug' => Str::slug($title),
             'title' => $title,

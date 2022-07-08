@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Blog;
 
-use App\Models\Blog\BlogPost;
+use App\Models\Blog\Post;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -17,7 +17,7 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $posts = BlogPost::all();
+        $posts = Post::all();
         return view('blog.index', compact('posts'));
     }
 

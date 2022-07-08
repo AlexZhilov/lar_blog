@@ -30,6 +30,7 @@ class Request extends FormRequest
             'category_id' => ['required','integer','exists:blog_categories,id'],
             'excerpt' => ['required','min:5'],
             'content_raw' => ['required','min:5'],
+            'is_published' => 'boolean',
         ];
     }
 }

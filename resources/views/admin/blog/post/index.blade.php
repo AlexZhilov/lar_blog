@@ -20,8 +20,8 @@
                     <tbody>
 
                     @foreach($posts as $post)
-                        @php /** @var $post \App\Models\Blog\BlogPost */ @endphp
-                        <tr {{ !$post->is_published ? ' style="opacity: 0.5" ' : ''}}>
+                        @php /** @var $post \App\Models\Blog\Post */ @endphp
+                        <tr {!! !$post->is_published ? 'style="opacity:.3"' : '' !!}>
                             <th scope="row">{{ $post->id }}.</th>
                             <td>{{ $post->category->title }}</td>
                             <td><a href="{{ route('admin.blog.post.edit', $post->id) }}">{{ $post->title }}</a></td>

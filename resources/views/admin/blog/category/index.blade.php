@@ -19,7 +19,7 @@
                     <tbody>
 
                     @foreach($categories as $category)
-                        @php /** @var $category \App\Models\Blog\BlogCategory */ @endphp
+                        @php /** @var $category \App\Models\Blog\Category */ @endphp
                         <tr>
                             <th scope="row">{{ $category->id }}.</th>
                             <td>

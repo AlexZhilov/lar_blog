@@ -1,4 +1,4 @@
-@php /** @var $post \App\Models\Blog\BlogPost */ @endphp
+@php /** @var $post \App\Models\Blog\Post */ @endphp
 @if($post->exists)
 
     <div class="card">
@@ -10,12 +10,17 @@
                 <label for="disabledTextInput" class="form-label">Редактировано:</label>
                 <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->updated_at }}" disabled>
             @endif
+
+            @if( $post->is_published )
+                <label for="disabledTextInput" class="form-label">Опубликовано:</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->updated_at->diffForHumans() }}" disabled>
+            @endif
         </div>
     </div>
 
 @endif
 
-<div class="card {{ $post->exists ? 'mt-2' : '' }}">
+<div class="card {{ $post->exists ? 'mt-3' : '' }}">
     <div class="card-body text-center">
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </div>
