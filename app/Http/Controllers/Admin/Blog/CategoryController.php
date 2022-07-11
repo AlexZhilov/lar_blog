@@ -59,7 +59,6 @@ class CategoryController extends BaseController
      */
     public function store(CategoryRequest $request)
     {
-        dd(__METHOD__);
         $category = $this->service->store($request->validated());
         return redirect()->route('admin.blog.category.edit', $category->id);
     }
@@ -85,7 +84,6 @@ class CategoryController extends BaseController
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        dd(__METHOD__);
         $this->service->update($request->validated(), $category);
         return redirect()->route('admin.blog.category.edit', $category->id);
     }
