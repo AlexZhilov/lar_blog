@@ -24,6 +24,7 @@ Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function(){
 /****** ADMIN ******/
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admin'], function(){
 
+    Route::get('/', 'MainController@index')->name('admin.index');
     /* BLOG */
     Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function(){
         /* CATEGORY */
@@ -48,3 +49,9 @@ Route::get('/', function () {
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', function() {
+    return view('home');
+})->name('home')->middleware('auth');
