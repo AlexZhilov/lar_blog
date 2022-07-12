@@ -4,7 +4,9 @@ return [
 
     'main_navigation'               => 'ГЛАВНОЕ МЕНЮ',
     'blog'                          => 'Блог',
+    'post'                          => 'Посты',
     'pages'                         => 'Страницы',
+    'category'                      => 'Категории',
     'account_settings'              => 'НАСТРОЙКИ ПРОФИЛЯ',
     'profile'                       => 'Профиль',
     'change_password'               => 'Изменить пароль',

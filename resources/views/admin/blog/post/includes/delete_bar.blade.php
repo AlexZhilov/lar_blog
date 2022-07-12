@@ -8,7 +8,7 @@
                 <form action="{{ route('admin.blog.post.destroy', $post->id) }}" method="post">
                     @method('delete')
                     @csrf
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCatModal">Удалить</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCatModal">Удалить</button>
 
                     <!-- The Modal -->
                     <div class="modal" id="deleteCatModal">
@@ -18,7 +18,9 @@
                                 <!-- Modal Header -->
                                 <div class="modal-header">
                                     <h4 class="modal-title">Modal Heading</h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
                                 </div>
 
                                 <!-- Modal body -->

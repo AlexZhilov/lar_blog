@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('adminlte::page')
 
 @section('content')
-    <div class="container">
-        <div class="row card">
-            <div class="col-12 card-body">
+
+    <div class="row p-2 pt-4">
+
+        <div class="col-12 card">
+            <div class="card-body">
 
                 <a href="{{ route('admin.blog.post.create') }}" class="btn btn-primary">Создать пост</a>
 
@@ -37,4 +39,5 @@
             </div>
         </div>
     </div>
+
 @endsection

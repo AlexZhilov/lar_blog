@@ -21,6 +21,8 @@
     {{-- Main Content --}}
     <div class="content">
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
+            @include('admin.includes.error')
+            @include('flash::message')
             @yield('content')
         </div>
     </div>

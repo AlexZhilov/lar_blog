@@ -6,10 +6,10 @@
 
         <ul class="nav nav-tabs card-header-tabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#main-info" type="button" role="tab" aria-controls="home" aria-selected="true">Основные</button>
+                <button class="nav-link active" id="home-tab" data-toggle="tab" href="#main-info" type="button" role="tab" aria-controls="home" aria-selected="true">Основные</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#add-info" type="button" role="tab" aria-controls="profile" aria-selected="false">Дополнительные</button>
+                <button class="nav-link" id="profile-tab" data-toggle="tab" href="#add-info" type="button" role="tab" aria-controls="profile" aria-selected="false">Дополнительные</button>
             </li>
             <li>
                 @if($post->exists)
@@ -30,22 +30,20 @@
             <!-- Main info -->
             <div class="tab-pane fade show active" id="main-info" role="tabpanel" aria-labelledby="home-tab">
 
-                <div class="col">
-                    <label for="title" class="form-label @error('title') text-danger @enderror">Заголовок</label>
-                    <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $post->title) }}">
-                    @error('title')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                <div class="col">
-                    <label for="content_raw" class="form-label @error('content_raw') text-danger @enderror">Краткое Описание</label>
-                    <textarea class="form-control @error('content_raw') is-invalid @enderror" name="content_raw" id="content_raw" cols="30"
-                              rows="10">{{ old('content_raw', $post->content_raw) }}</textarea>
-                    @error('content_raw')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
+                <label for="title" class="form-label @error('title') text-danger @enderror">Заголовок</label>
+                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $post->title) }}">
+                @error('title')
+                <p class="text-danger">{{ $message }}</p>
+                @enderror
+
+                <label for="content_raw" class="form-label @error('content_raw') text-danger @enderror">Краткое Описание</label>
+                <textarea class="form-control @error('content_raw') is-invalid @enderror" name="content_raw" id="content_raw" cols="30"
+                          rows="10">{{ old('content_raw', $post->content_raw) }}</textarea>
+                @error('content_raw')
+                <p class="text-danger">{{ $message }}</p>
+                @enderror
+
 
             </div>
             <!-- END Main info -->
@@ -63,7 +61,7 @@
                     </div>
                     <div class="col">
                         <label for="category_id" class="form-label @error('category_id') text-danger @enderror">Категория</label>
-                        <select id="category_id" class="form-select @error('category_id') is-invalid @enderror" name="category_id">
+                        <select id="category_id" class="browser-default custom-select @error('category_id') is-invalid @enderror" name="category_id">
                             <option>Choose...</option>
                             @foreach($categories as $id => $title)
                                 {{ $CategoryId = $post->exists ? $post->category->id : old('category_id') }}
@@ -71,14 +69,15 @@
                             @endforeach
                         </select>
                     </div>
+
                 </div>
-                <div class="col">
-                    <label for="excerpt" class="form-label @error('excerpt') text-danger @enderror">Краткое Описание</label>
-                    <textarea class="form-control @error('excerpt') is-invalid @enderror" name="excerpt" id="excerpt" cols="30" rows="10">{{ old('excerpt', $post->excerpt) }}</textarea>
-                    @error('excerpt')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
+
+                <label for="excerpt" class="form-label @error('excerpt') text-danger @enderror">Краткое Описание</label>
+                <textarea class="form-control @error('excerpt') is-invalid @enderror" name="excerpt" id="excerpt" cols="30" rows="10">{{ old('excerpt', $post->excerpt) }}</textarea>
+                @error('excerpt')
+                <p class="text-danger">{{ $message }}</p>
+                @enderror
+
 
                 <div class="col">
                     <div class="mt-3 form-check">

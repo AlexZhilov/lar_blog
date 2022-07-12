@@ -46,7 +46,7 @@ return [
     */
 
     'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img' => 'adm/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -253,6 +253,19 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+
+        ['header' => 'blog'],
+        [
+            'text' => 'post',
+            'url'  => 'admin/blog/post',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'category',
+            'url'  => 'admin/blog/category',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

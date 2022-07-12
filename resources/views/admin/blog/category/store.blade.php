@@ -1,9 +1,9 @@
 @php /** @var $category \App\Models\Blog\Category */ @endphp
-@extends('layouts.app')
+@extends('adminlte::page')
 
 @section('content')
-    <div class="container">
-        <div class="row">
+
+        <div class="row p-2 pt-4">
             <div class="col-12">
 
                 <form action="{{ $category->exists ? route('admin.blog.category.update', $category->id) : route('admin.blog.category.store') }}" method="post" class="row g-3">
@@ -20,5 +20,5 @@
             </div>
             @include('admin.blog.category.includes.delete_bar')
         </div>
-    </div>
+{{--    </div>--}}
 @endsection

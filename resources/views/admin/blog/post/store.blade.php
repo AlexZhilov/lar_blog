@@ -1,9 +1,9 @@
 @php /** @var $post \App\Models\Blog\Post */ @endphp
-@extends('layouts.app')
+@extends('adminlte::page')
 
 @section('content')
-    <div class="container">
-        <div class="row">
+
+        <div class="row p-2 pt-4">
             <div class="col-12">
 
                 <form action="{{ $post->exists ? route('admin.blog.post.update', $post->id) : route('admin.blog.post.store') }}" method="post" class="row g-3">
@@ -20,5 +20,5 @@
             </div>
             @include('admin.blog.post.includes.delete_bar')
         </div>
-    </div>
+
 @endsection
