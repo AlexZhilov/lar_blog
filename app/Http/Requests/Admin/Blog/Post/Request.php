@@ -30,7 +30,7 @@ class Request extends FormRequest
             'slug' => ["unique:blog_posts,slug,{$id}",/*'alpha_dash',*/'max:255'],
             'category_id' => ['required','integer','exists:blog_categories,id'],
             'excerpt' => ['required','min:5'],
-            'content_raw' => ['required','min:5'],
+            'content' => ['required','min:5'],
             'is_published' => 'boolean',
         ];
     }

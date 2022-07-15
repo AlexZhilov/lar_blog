@@ -37,10 +37,10 @@
                 <p class="text-danger">{{ $message }}</p>
                 @enderror
 
-                <label for="content_raw" class="form-label @error('content_raw') text-danger @enderror">Краткое Описание</label>
-                <textarea class="form-control @error('content_raw') is-invalid @enderror" name="content_raw" id="content_raw" cols="30"
-                          rows="10">{{ old('content_raw', $post->content_raw) }}</textarea>
-                @error('content_raw')
+                <label for="content" class="form-label @error('content') text-danger @enderror">Текст</label>
+                <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" cols="30"
+                          rows="10">{{ old('content', $post->content) }}</textarea>
+                @error('content')
                 <p class="text-danger">{{ $message }}</p>
                 @enderror
 

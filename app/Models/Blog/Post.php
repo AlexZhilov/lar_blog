@@ -22,8 +22,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string $slug
  * @property string $title
  * @property string $excerpt
- * @property string $content_raw
- * @property string $content_html
+ * @property string $content
+ *
  * @property boolean $is_published
  * @property Carbon $published_at
  * @property Carbon $deleted_at
@@ -81,5 +81,10 @@ class Post extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
     }
 }

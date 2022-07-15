@@ -24,12 +24,15 @@ class CreateBlogPostsTable extends Migration
 
             $table->text('excerpt')->nullable();
 
-            $table->text('content_raw')->nullable();
-            $table->text('content_html')->nullable();
+            $table->text('content')->nullable();
+
+            $table->string('image')->nullable();
 
             $table->boolean('is_published')->default(false);
 
             $table->timestamp('published_at')->nullable()->index('published_at');
+
+            $table->unsignedBigInteger('views')->default(0);
 
             $table->softDeletes();
             $table->timestamps();

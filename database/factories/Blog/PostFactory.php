@@ -28,10 +28,10 @@ class PostFactory extends Factory
             'slug' => Str::slug($title),
             'title' => $title,
             'excerpt' => Str::limit($content, 255),
-            'content_raw' => $content,
-            'content_html' => $content,
+            'content' => $content,
             'is_published' => $is_published,
             'published_at' => $is_published ? $this->faker->dateTimeBetween('-2 weeks', '-1 days') : null,
+            'views' => random_int(1, 1000),
             'created_at' => $created_at,
             'updated_at' => $created_at,
         ];
