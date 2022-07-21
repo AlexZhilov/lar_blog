@@ -23,8 +23,8 @@ class PostFactory extends Factory
         $created_at = $this->faker->dateTimeBetween('-5 weeks', '-1 weeks');
 
         return [
-            'category_id' => Category::get()->random()->id,
-            'user_id' => User::get()->random()->id,
+            'category_id' => Category::count() > 0 ? Category::get()->random() : 1,
+            'user_id' => User::get()->random(),
             'slug' => Str::slug($title),
             'title' => $title,
             'excerpt' => Str::limit($content, 255),
