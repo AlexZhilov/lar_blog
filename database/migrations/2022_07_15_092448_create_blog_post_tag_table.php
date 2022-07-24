@@ -20,8 +20,6 @@ class CreateBlogPostTagTable extends Migration
 
             $table->foreign('post_id', 'post_tag_post_fk')->references('id')->on('blog_posts')->onDelete('cascade');
             $table->foreign('tag_id', 'post_tag_tag_fk')->references('id')->on('blog_tags')->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 

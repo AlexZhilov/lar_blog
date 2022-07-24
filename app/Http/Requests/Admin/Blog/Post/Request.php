@@ -28,6 +28,7 @@ class Request extends FormRequest
         return [
             'title' => ['required','string','max:255'],
             'slug' => ["unique:blog_posts,slug,{$id}",/*'alpha_dash',*/'max:255'],
+            'user_id' => ['required','integer','exists:users,id'],
             'category_id' => ['required','integer','exists:blog_categories,id'],
             'excerpt' => ['required','min:5'],
             'content' => ['required','min:5'],
@@ -41,6 +42,7 @@ class Request extends FormRequest
     protected function prepareForValidation() :void
     {
         $this->merge([
+            'user_id' => $this->user_id ?? 1,
             'slug' => $this->slug ?
                 Str::of($this->slug)->slug()->limit() :
                 Str::slug( Str::of($this->title)->limit() )
