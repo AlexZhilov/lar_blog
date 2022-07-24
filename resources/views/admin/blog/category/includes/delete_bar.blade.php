@@ -3,14 +3,14 @@
 
     <div class="col-8">
         <div class="card mt-2">
-            <div class="card-body">
+            <div class="card-body text-right">
                 <form action="{{ route('admin.blog.category.destroy', $category->id) }}" method="post">
                     @method('delete')
                     @csrf
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCatModal">Удалить</button>
 
                     <!-- The Modal -->
-                    <div class="modal" id="deleteCatModal">
+                    <div class="modal text-left" id="deleteCatModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
 
@@ -35,6 +35,7 @@
                             </div>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>

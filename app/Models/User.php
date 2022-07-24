@@ -84,6 +84,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    /**
+     * Override parent boot and Call deleting event
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($users) {
+            foreach ($users->posts()->get() as $post) {
+                $post->delete();
+            }
+        });
+    }
+
+
+
     /**
      * @return HasMany
      */

@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Database\Factories\Blog\PostFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -53,6 +54,13 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Post withTrashed()
  * @method static QueryBuilder|Post withoutTrashed()
  * @mixin \Eloquent
+ * @property string|null $image
+ * @property int $views
+ * @property-read Collection|Tag[] $tags
+ * @property-read int|null $tags_count
+ * @method static Builder|Post whereContent($value)
+ * @method static Builder|Post whereImage($value)
+ * @method static Builder|Post whereViews($value)
  */
 class Post extends Model
 {
@@ -72,7 +80,7 @@ class Post extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class)->withDefault(['title' => 'NULL']);
     }
 
     /**

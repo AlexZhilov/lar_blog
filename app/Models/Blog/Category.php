@@ -5,10 +5,12 @@ namespace App\Models\Blog;
 use Carbon\Carbon;
 use Database\Factories\Blog\CategoryFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Category
@@ -36,14 +38,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Category whereTitle($value)
  * @method static Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read Category $parent
+ * @property-read Collection|Post[] $posts
+ * @property-read int|null $posts_count
  */
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'blog_categories';
     protected $guarded = [];
-
 
     /**
      * @return HasMany
@@ -59,5 +63,10 @@ class Category extends Model
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with('parent');
     }
 }

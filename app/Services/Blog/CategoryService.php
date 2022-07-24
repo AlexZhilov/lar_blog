@@ -20,6 +20,24 @@ class CategoryService
 
     public function delete(Category $category)
     {
+        $this->deleteChildCategoryAndPost($category);
         $category->delete();
+    }
+
+    /**
+     * Рекурсивное удаление всех категорий и постов
+     *
+     * @param Category $category
+     */
+    private function deleteChildCategoryAndPost(Category $category)
+    {
+        foreach ($category->posts()->get() as $post){
+            $post->delete();
+        }
+
+        foreach ($category->children()->get() as $child){
+            $child->delete();
+            $this->deleteChildCategoryAndPost($child);
+        }
     }
 }

@@ -15,6 +15,9 @@
                 <label for="disabledTextInput" class="form-label">Опубликовано:</label>
                 <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->updated_at->diffForHumans() }}" disabled>
             @endif
+
+            <label for="disabledTextInput" class="form-label">Просмотры:</label>
+            <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->views }}" disabled>
         </div>
     </div>
 

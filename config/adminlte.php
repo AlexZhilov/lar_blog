@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'use_ico_only' => false,
+    'use_ico_only' => true,
     'use_full_favicon' => false,
 
     /*
@@ -257,12 +257,12 @@ return [
         ['header' => 'blog'],
         [
             'text' => 'post',
-            'url'  => 'admin/blog/post',
+            'url'  => 'admin/blog/post/',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'category',
-            'url'  => 'admin/blog/category',
+            'url'  => 'admin/blog/category/',
             'icon' => 'fas fa-fw fa-user',
         ],
 

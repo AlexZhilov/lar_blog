@@ -16,7 +16,7 @@ class CreateBlogCategoriesTable extends Migration
         Schema::create('blog_categories', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('parent_id')->default(1);
+            $table->unsignedBigInteger('parent_id')->default(1)->nullable();
 
             $table->string('slug')->unique();
             $table->string('title');
@@ -25,7 +25,7 @@ class CreateBlogCategoriesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('parent_id')->references('id')->on('blog_categories');
+            $table->foreign('parent_id')->references('id')->on('blog_categories')->onDelete('cascade');
         });
     }
 
