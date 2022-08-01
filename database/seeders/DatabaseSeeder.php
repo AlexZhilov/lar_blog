@@ -6,9 +6,7 @@ use App\Models\Blog\Category;
 use App\Models\Blog\Post;
 use App\Models\Blog\Tag;
 use App\Models\User;
-use Database\Factories\Blog\CategoryFactory;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

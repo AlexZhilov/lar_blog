@@ -2,7 +2,7 @@
 
 @if($post->exists)
 
-    <div class="col-8">
+    <div class="col-md-8">
         <div class="card mt-2">
             <div class="card-body text-right">
                 <form action="{{ route('admin.blog.post.destroy', $post->id) }}" method="post">

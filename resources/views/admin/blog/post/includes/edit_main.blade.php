@@ -30,36 +30,16 @@
             <!-- Main info -->
             <div class="tab-pane fade show active" id="main-info" role="tabpanel" aria-labelledby="home-tab">
 
-
-                <label for="title" class="form-label @error('title') text-danger @enderror">Заголовок</label>
-                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $post->title) }}">
-                @error('title')
-                <p class="text-danger">{{ $message }}</p>
-                @enderror
-
-                <label for="content" class="form-label @error('content') text-danger @enderror">Текст</label>
-                <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" cols="30"
-                          rows="10">{{ old('content', $post->content) }}</textarea>
-                @error('content')
-                <p class="text-danger">{{ $message }}</p>
-                @enderror
-
-
-            </div>
-            <!-- END Main info -->
-            <!-- Addition info -->
-            <div class="tab-pane fade" id="add-info" role="tabpanel" aria-labelledby="profile-tab">
-
                 <div class="row">
-
-                    <div class="col">
-                        <label for="text" class="form-label @error('slug') text-danger @enderror">URL</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" id="text" name="slug" value="{{ old('slug', $post->slug) }}">
-                        @error('slug')
+                    <div class="col-md-6">
+                        <label for="title" class="form-label @error('title') text-danger @enderror">Заголовок</label>
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $post->title) }}">
+                        @error('title')
                         <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="col">
+
+                    <div class="col-md-6">
                         <label for="category_id" class="form-label @error('category_id') text-danger @enderror">Категория</label>
                         <select id="category_id" class="browser-default custom-select @error('category_id') is-invalid @enderror" name="category_id">
                             <option>Choose...</option>
@@ -69,6 +49,49 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="content" class="form-label @error('content') text-danger @enderror">Текст</label>
+                        <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" cols="30"
+                                  rows="10">{{ old('content', $post->content) }}</textarea>
+                        @error('content')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+            <!-- END Main info -->
+            <!-- Addition info -->
+            <div class="tab-pane fade" id="add-info" role="tabpanel" aria-labelledby="profile-tab">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label for="text" class="form-label @error('slug') text-danger @enderror">URL</label>
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror" id="text" name="slug" value="{{ old('slug', $post->slug) }}">
+                        @error('slug')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+
+                        <select multiple id="inputState" class="form-control" name="tag[]">
+
+                            @foreach($tags as $id => $tag)
+                                @php /** @var $tag \App\Models\Blog\Tag */ @endphp
+                                <option
+                                    @foreach($post->tags as $postTag)
+                                    {{ $postTag->id == $id ? 'selected' : ''}}
+                                    @endforeach
+                                    value="{{ $id }}">{{ $tag }}</option>
+
+                            @endforeach
+                        </select>
+                    </div>
+
 
                 </div>
 
@@ -94,3 +117,13 @@
 
     </div>
 </div>
+
+@push('script')
+    <script>
+        $(function(){
+            $("#inputState").select2({
+                theme: "bootstrap"
+            });
+        })
+    </script>
+@endpush

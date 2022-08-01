@@ -14,7 +14,9 @@ class PostService
      */
     public function store($data)
     {
-        return (new Post)->create($data);
+        $post = Post::create( $data->except('tag')->toArray() );
+        $post->tags()->attach( $data->get('tag') );
+        return $post;
     }
 
     /**
@@ -23,7 +25,8 @@ class PostService
      */
     public function update($data, Post $post)
     {
-        $post->update($data);
+        $post->update( $data->except('tag')->toArray() );
+        $post->tags()->sync( $data->get('tag') );
     }
 
     /**

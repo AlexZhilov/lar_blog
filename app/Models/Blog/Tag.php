@@ -34,6 +34,8 @@ class Tag extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $table = 'blog_tags';
 
     public function posts()

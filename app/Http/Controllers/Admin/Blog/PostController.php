@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Blog;
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Admin\Blog\Post\Request as PostRequest;
 use App\Models\Blog\Post;
+use App\Models\Blog\Tag;
 use App\Repositories\Blog\CategoryRepository as BlogCategoryRepository;
 use App\Repositories\Blog\PostRepository as BlogPostRepository;
 use App\Services\Blog\PostService;
@@ -52,8 +53,9 @@ class PostController extends BaseController
      */
     public function create(Post $post)
     {
+        $tags = Tag::pluck('title', 'id');
         $categories = $this->blogCategoryRepository->getAllForDropList();
-        return view('admin.blog.post.store', compact('categories', 'post'));
+        return view('admin.blog.post.store', compact('categories', 'post', 'tags'));
     }
 
     /**
@@ -64,7 +66,7 @@ class PostController extends BaseController
      */
     public function store(PostRequest $request)
     {
-        $post = $this->service->store( $request->validated() );
+        $post = $this->service->store( collect($request->validated()) );
         return redirect()->route('admin.blog.post.edit', $post->id);
     }
 
@@ -87,8 +89,9 @@ class PostController extends BaseController
      */
     public function edit(Post $post)
     {
+        $tags = Tag::pluck('title', 'id');
         $categories = $this->blogCategoryRepository->getAllForDropList();
-        return view('admin.blog.post.store', compact('post', 'categories'));
+        return view('admin.blog.post.store', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -100,8 +103,7 @@ class PostController extends BaseController
      */
     public function update(PostRequest $request, Post $post)
     {
-//        dd($request->all());
-        $this->service->update( $request->validated(), $post );
+        $this->service->update( collect($request->validated()), $post );
         return redirect()->route('admin.blog.post.edit', $post->id);
     }
 
