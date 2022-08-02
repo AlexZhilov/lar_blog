@@ -13,13 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/******* SITE ******/
-/* BLOG */
-Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function(){
+/****** SITE ******/
+Route::group(['namespace' => 'Site'], function (){
 
-//    Route::resource('posts', 'PostController')->names('blog.posts');
+    Route::get('/', 'SiteController@index')->name('home');
+    /* BLOG */
+    Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function (){
+        Route::get('/', 'MainController@index');
+    });
 
 });
+
+
+
 
 /****** ADMIN ******/
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admin'], function(){
@@ -40,15 +46,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admi
 
 });
 
-Auth::routes();
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
