@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * App\Models\Blog\Tag
@@ -43,4 +44,25 @@ class Tag extends Model
         return $this->belongsToMany(Post::class, 'blog_post_tag');
     }
 
+    /**
+     * Create new tags
+     * @param $tags
+     */
+    public static function createNew(&$tags)
+    {
+        if(empty($tags))
+            return false;
+
+        foreach ($tags as $key => $tag) {
+
+            if(self::where('title', $tag)->doesntExist() && !is_numeric($tag)){
+                $newTag = self::create([
+                    'title' => $tag,
+                    'slug' => Str::slug($tag)
+                ]);
+                $tags[$key] = $newTag->id;
+            }
+
+        }
+    }
 }

@@ -24,7 +24,8 @@
                             <th scope="row">{{ $category->id }}.</th>
                             <td>
                                 <a href="{{ route('admin.blog.category.edit', $category->id) }}">{{ $category->title }}</a>
-                                <span class="badge bg-primary rounded-pill">---</span>
+                                <span class="badge bg-primary rounded-pill" data-toggle="tooltip" data-placement="right" title="{{ $category->posts_count }} постов в категории">{{ $category->posts_count }}</span>
+
                             </td>
                             <td>{{ $category->updated_at }}</td>
                             <td>{{ $category->parent->title }}</td>

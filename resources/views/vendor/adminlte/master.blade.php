@@ -50,7 +50,7 @@
 
     {{-- Favicon --}}
     @if(config('adminlte.use_ico_only'))
-        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}" />
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
     @elseif(config('adminlte.use_full_favicon'))
         <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicons/apple-icon-57x57.png') }}">
@@ -70,6 +70,7 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/style.css') }}">
     @stack('style')
 </head>
 
@@ -103,6 +104,8 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
+    <script src="{{ asset('assets/admin/js/libs.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/main.js') }}"></script>
     @stack('script')
 
 </body>

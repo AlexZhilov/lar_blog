@@ -103,6 +103,7 @@ class PostController extends BaseController
      */
     public function update(PostRequest $request, Post $post)
     {
+//        dd($request->file('image'));
         $this->service->update( collect($request->validated()), $post );
         return redirect()->route('admin.blog.post.edit', $post->id);
     }

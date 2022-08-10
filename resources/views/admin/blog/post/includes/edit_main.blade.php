@@ -25,7 +25,6 @@
     </div>
     <div class="card-body">
 
-
         <div class="tab-content" id="myTabContent">
             <!-- Main info -->
             <div class="tab-pane fade show active" id="main-info" role="tabpanel" aria-labelledby="home-tab">
@@ -54,11 +53,28 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label for="content" class="form-label @error('content') text-danger @enderror">Текст</label>
-                        <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" cols="30"
+                        <textarea class="summernote form-control @error('content') is-invalid @enderror" name="content" id="content" cols="30"
                                   rows="10">{{ old('content', $post->content) }}</textarea>
                         @error('content')
                         <p class="text-danger">{{ $message }}</p>
                         @enderror
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="main_image">Изображение</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="main_image" name="image">
+                                    <label class="custom-file-label" for="main_image">Выберите файл</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Загрузить</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -78,7 +94,8 @@
                     </div>
                     <div class="col-md-6">
 
-                        <select multiple id="inputState" class="form-control" name="tag[]">
+                        <label for="select-tags" class="form-label">Теги</label>
+                        <select multiple id="select-tags" class="multi-select2 form-control" name="tag[]">
 
                             @foreach($tags as $id => $tag)
                                 @php /** @var $tag \App\Models\Blog\Tag */ @endphp
@@ -101,15 +118,6 @@
                 <p class="text-danger">{{ $message }}</p>
                 @enderror
 
-
-                <div class="col">
-                    <div class="mt-3 form-check">
-                        <input type="hidden" name="is_published" value="0">
-                        <input type="checkbox" class="form-check-input" id="is_published" name="is_published" {{ $post->is_published ? 'checked="checked"' : '' }} value="1">
-                        <label class="form-check-label" for="is_published">Опубликовано</label>
-                    </div>
-                </div>
-
             </div>
             <!-- END Addition info -->
         </div>
@@ -117,13 +125,3 @@
 
     </div>
 </div>
-
-@push('script')
-    <script>
-        $(function(){
-            $("#inputState").select2({
-                theme: "bootstrap"
-            });
-        })
-    </script>
-@endpush

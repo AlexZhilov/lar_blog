@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Butschster\Head\Contracts\MetaTags\MetaInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -12,13 +13,20 @@ abstract class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
+     * Set meta-tags on pages
+     * @var MetaInterface
+     */
+    protected $meta;
+
+    /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param MetaInterface $meta
      */
-    public function __construct()
+    public function __construct(MetaInterface $meta)
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
+        $this->meta = $meta;
     }
 
 }

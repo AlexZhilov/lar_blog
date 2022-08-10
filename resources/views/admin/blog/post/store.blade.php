@@ -6,7 +6,7 @@
         <div class="row p-2 pt-4">
             <div class="col-12">
 
-                <form action="{{ $post->exists ? route('admin.blog.post.update', $post->id) : route('admin.blog.post.store') }}" method="post" class="row g-3">
+                <form action="{{ $post->exists ? route('admin.blog.post.update', $post->id) : route('admin.blog.post.store') }}" method="post" enctype="multipart/form-data" class="row g-3">
                     @csrf
                     @if( $post->exists ) @method('PATCH') @endif
                     <div class="col-md-8">

@@ -38,6 +38,7 @@ class CategoryRepository extends CoreRepository
 //                ->select(['id','slug','title'])
                 ->orderBy('id', 'DESC')
                 ->with('parent')
+                ->withCount('posts')
                 ->paginate($perPage);
     }
 

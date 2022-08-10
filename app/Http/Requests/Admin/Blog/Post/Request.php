@@ -32,6 +32,7 @@ class Request extends FormRequest
             'category_id' => ['required','integer','exists:blog_categories,id'],
             'excerpt' => ['required','min:5'],
             'content' => ['required','min:5'],
+            'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
             'is_published' => 'boolean',
             'tag' => ['array','nullable'],
         ];

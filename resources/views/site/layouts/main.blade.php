@@ -2,15 +2,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
+    <!-- meta-tags -->
+    {!! Meta::toHtml() !!}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
+    <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/libs.css') }}">
@@ -19,6 +15,7 @@
 </head>
 
 <body>
+    {!! Meta::placement('header')->toHtml() !!}
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -146,6 +143,7 @@
                                                         alt="Portrait of a Woman"
                                                         loading="lazy"
                                                 />
+                                                <span>{{ Auth::user()->name }}</span>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                                 <a class="dropdown-item" href="#">lk</a>
@@ -285,6 +283,9 @@
     <!-- Js -->
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    {!! Meta::footer()->toHtml() !!}
+
     @stack('script')
 
 </body>

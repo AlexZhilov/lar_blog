@@ -14,6 +14,11 @@
 @section('body')
     <div class="wrapper">
 
+        <!-- Preloader -->
+        <div class="preloader dark-mode">
+            <img src="{{ asset('adm/adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
         {{-- Top Navbar --}}
         @if($layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.navbar.navbar-layout-topnav')

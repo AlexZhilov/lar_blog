@@ -1,5 +1,8 @@
 const mix = require('laravel-mix');
 
+const resources_site = 'resources/public/site';
+const resources_admin = 'resources/public/admin';
+const public_dir = 'public/assets';
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,44 +14,60 @@ const mix = require('laravel-mix');
  |
  */
 
+// *** SITE ***
 mix
-    // SITE
     // lib css
     .styles([
-        'resources/public/site/css/font-awesome.min.css',
-        'resources/public/site/css/elegant-icons.css',
-        'resources/public/site/css/nice-select.css',
-        'resources/public/site/css/jquery-ui.min.css',
-        'resources/public/site/css/owl.carousel.min.css',
-        'resources/public/site/css/slicknav.min.css',
+        `${resources_site}/css/font-awesome.min.css`,
+        `${resources_site}/css/elegant-icons.css`,
+        `${resources_site}/css/nice-select.css`,
+        `${resources_site}/css/jquery-ui.min.css`,
+        `${resources_site}/css/owl.carousel.min.css`,
+        `${resources_site}/css/slicknav.min.css`,
 
-    ],'public/assets/css/libs.css')
+    ],`${public_dir}/css/libs.css`)
     // user scss styles
-    .sass('resources/public/site/sass/style.scss', 'public/assets/css')
+    .sass(`${resources_site}/sass/style.scss`, `${public_dir}/css`)
     // lib js
     .scripts([
         'node_modules/jquery/dist/jquery.js',
-        'resources/public/site/js/popper.min.js',
+        `${resources_site}/js/popper.min.js`,
         'node_modules/bootstrap/dist/js/bootstrap.js',
 
-        'resources/public/site/js/jquery.nice-select.min.js',
-        'resources/public/site/js/jquery-ui.min.js',
-        'resources/public/site/js/jquery.slicknav.js',
-        'resources/public/site/js/mixitup.min.js',
-        'resources/public/site/js/owl.carousel.min.js',
+        `${resources_site}/js/jquery.nice-select.min.js`,
+        `${resources_site}/js/jquery-ui.min.js`,
+        `${resources_site}/js/jquery.slicknav.js`,
+        `${resources_site}/js/mixitup.min.js`,
+        `${resources_site}/js/owl.carousel.min.js`,
 
-    ], 'public/assets/js/scripts.js')
+    ], `${public_dir}/js/libs.js`)
     // user js
-    .js('resources/public/site/js/main.js', 'public/assets/js')
+    .js(`${resources_site}/js/main.js`, `${public_dir}/js`);
 
+// *** ADMIN ***
+mix
+    // user scss styles
+    .sass(`${resources_admin}/sass/style.scss`, `${public_dir}/admin/css`)
+    .scripts([
+        `${resources_admin}/js/bs-custom-file-input.min.js`,
+    ],`${public_dir}/admin/js/libs.js`)
+    // user js
+    .js(`${resources_admin}/js/main.js`, `${public_dir}/admin/js`);
+
+
+mix
     .browserSync({
         proxy: 'http://localhost:8000/',
         open: false,
         files: [
-            // 'app/**/*',
-            // 'public/assets/**/*',
-            'public/assets/css/style.css',
-            'resources/views/site/*',
+            //*** views ***
+            'resources/views/**/*',
+            // *** site ***
+            `${public_dir}/css/style.css`,
+            `${public_dir}/js/main.js`,
+            // *** admin ***
+            `${public_dir}/admin/css/style.css`,
+            `${public_dir}/admin/js/main.js`,
         ]
     })
     .sourceMaps();

@@ -40,7 +40,8 @@
             $(document).Toasts('create', {
                 title: 'Уведомление',
                 body: $(".flash-msg").html(),
-                class: 'm-5 alert-{{ $message['level'] }}',
+                {{--class: 'm-5 alert-{{ $message['level'] }}',--}}
+                class: 'm-5',
                 position: 'bottomRight',
                 autohide: true,
                 delay: 5000,
