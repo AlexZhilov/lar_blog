@@ -40,7 +40,7 @@
 
                     <div class="col-md-6">
                         <label for="category_id" class="form-label @error('category_id') text-danger @enderror">Категория</label>
-                        <select id="category_id" class="browser-default custom-select @error('category_id') is-invalid @enderror" name="category_id">
+                        <select id="category_id" class="one-select2 browser-default custom-select @error('category_id') is-invalid @enderror" name="category_id">
                             <option>Choose...</option>
                             @foreach($categories as $id => $title)
                                 {{ $CategoryId = $post->exists ? $post->category->id : old('category_id') }}
@@ -64,16 +64,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="main_image">Изображение</label>
+                            <label for="main_image" class="@error('image') text-danger @enderror">Изображение</label>
                             <div class="input-group">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="main_image" name="image">
+                                    <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="main_image" name="image">
                                     <label class="custom-file-label" for="main_image">Выберите файл</label>
                                 </div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Загрузить</span>
-                                </div>
                             </div>
+                            @error('image')
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>

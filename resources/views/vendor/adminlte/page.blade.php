@@ -16,7 +16,7 @@
 
         <!-- Preloader -->
         <div class="preloader dark-mode">
-            <img src="{{ asset('adm/adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
+            <img src="{{ asset('adm/vendor/adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         {{-- Top Navbar --}}

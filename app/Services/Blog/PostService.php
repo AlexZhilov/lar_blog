@@ -7,6 +7,7 @@ namespace App\Services\Blog;
 use App\Models\Blog\Post;
 use App\Models\Blog\Tag;
 use App\UseCases\Files\ImageService;
+use DB;
 
 class PostService
 {
@@ -23,11 +24,20 @@ class PostService
      */
     public function store($data)
     {
-        $tags = $data->get('tag');
-        $post = Post::create( $data->except('tag')->toArray() );
-        Tag::createNew( $tags );
-        $post->tags()->attach( $tags );
-        return $post;
+        return DB::transaction(function () use ($data){
+
+            $tags = $data->pull('tag');
+            Tag::createNew( $tags );
+
+            if( $data->get('image') ){
+                $data->put('image', $this->saveImage( $data->pull('image') ));
+            }
+
+            $post = Post::create( $data->toArray() );
+            $post->tags()->attach( $tags );
+
+            return $post;
+        });
     }
 
     /**
@@ -36,16 +46,22 @@ class PostService
      */
     public function update($data, Post $post)
     {
-        $tags = $data->get('tag');
-        $image = $this->image
-                    ->file( $data->get('image') )
-                    ->dir('post/main/big')
-                    ->upload();
-        dd($image);
 
-        $post->update( $data->except('tag')->toArray() );
-        Tag::createNew( $tags );
-        $post->tags()->sync( $tags );
+        DB::transaction(function () use ($data, $post){
+            //tags
+            $tags = $data->pull('tag');
+            Tag::createNew( $tags );
+            $post->tags()->sync( $tags );
+            //image
+            if( $data->get('image') ){
+                $data->put('image', $this->saveImage( $data->pull('image') ));
+            }
+
+            $post->update( $data->toArray() );
+
+    //        dd($data);
+        });
+
     }
 
     /**
@@ -57,9 +73,13 @@ class PostService
     }
 
 
-    public function saveImage($fileImage)
+    private function saveImage($fileImage)
     {
-        $fileImage->store('images/post/main/big');
+        return $this->image
+                ->file( $fileImage )
+                ->dir('post/big')
+                ->prefix('post_')
+                ->upload()['big'];
     }
 
 }

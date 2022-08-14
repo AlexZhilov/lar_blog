@@ -31,7 +31,6 @@ return [
     */
 
     'use_ico_only' => true,
-    'use_full_favicon' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -46,7 +45,7 @@ return [
     */
 
     'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'adm/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img' => 'adm/vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -54,7 +53,7 @@ return [
 
 
     'preloader.enabled' => false,
-    'preloader.img.path' => 'adm/adminlte/dist/img/AdminLTELogo.png',
+    'preloader.img.path' => 'adm/vendor/adminlte/dist/img/AdminLTELogo.png',
     'preloader.img.effect' => 'animation_wobble',
     /*
     |--------------------------------------------------------------------------
@@ -212,9 +211,13 @@ return [
     |
     */
 
-    'enabled_laravel_mix' => false,
-    'laravel_mix_css_path' => 'css/app.css',
-    'laravel_mix_js_path' => 'js/app.js',
+    'enabled_laravel_mix' => true,
+
+    'laravel_mix_css_libs' => 'assets/admin/css/libs.css',
+    'laravel_mix_css_main' => 'assets/admin/css/main.css',
+
+    'laravel_mix_js_libs' => 'assets/admin/js/libs.js',
+    'laravel_mix_js_main' => 'assets/admin/js/main.js',
 
     /*
     |--------------------------------------------------------------------------
@@ -454,21 +457,6 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
-                ],
-            ],
-        ],
-        'bootstrapSwitch' => [
-            'active' => true,
-            'files' => [
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.css',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/bootstrap-switch/js/bootstrap-switch.js',
                 ],
             ],
         ],

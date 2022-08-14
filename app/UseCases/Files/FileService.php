@@ -20,6 +20,10 @@ class FileService
      */
     protected $finalDir;
 
+    /**
+     * Директория для сохранения файла
+     * @var string
+     */
     protected $path;
 
     /**
@@ -41,10 +45,18 @@ class FileService
     protected $extension = '';
 
     /**
-     * Имя файла *( с разрешением || без )
+     * Разрешение файла по умолчанию
+     * @var static
+     */
+    protected $extensionDefault;
+
+    /**
+     * Имя файла *( с расширением или без )
      * @var string
      */
     protected $nameFile;
+
+    protected $uploadedFiles = [];
 
     /**
      * Генерация случайного имени файла
@@ -53,28 +65,16 @@ class FileService
      * @param string $prefix - префикс в названии файла
      * @return void
      */
-    public function generateName(string $extension = '', int $length = 10, string $prefix = '' )
+    public function generateName(string $extension = '', int $length = 10, string $prefix = '')
     {
         $extension = $extension ? '.' . $extension : '';
 
-        $this->nameFile = Str::of( microtime() . rand(0, 9999) )
-                            ->pipe('md5')
-                            ->limit($length, '')
-                            ->prepend($prefix)
-                            ->finish($extension);
+        $this->nameFile = Str::of(microtime() . rand(0, 9999))
+            ->pipe('md5')
+            ->limit($length, '')
+            ->prepend($prefix)
+            ->finish($extension);
     }
-
-
-    protected function setFinalPath(string $otherDir = null)
-    {
-        $dir = $otherDir ? preg_replace("#\w+/?$#", $otherDir, $this->path) : $this->path;
-        $this->finalDir = storage_path( Str::of($dir)->prepend($this->mainDir)->finish('/') );
-
-        if(!is_dir($this->finalDir))
-            mkdir($this->finalDir,666, true);
-//        dd($this->finalDir);
-    }
-
 
     /**
      * Директория для сохранения
@@ -83,7 +83,9 @@ class FileService
      */
     public function dir(string $path)
     {
-        $this->path = $path;
+        $this->setPath($path);
+        $this->setFinalPath();
+        $this->updateName();
         return $this;
     }
 
@@ -94,7 +96,8 @@ class FileService
      */
     public function prefix(string $prefix)
     {
-        $this->prefix = $prefix;
+        $this->setPrefix($prefix);
+        $this->updateName();
         return $this;
     }
 
@@ -105,7 +108,8 @@ class FileService
      */
     public function nameLength(int $int)
     {
-        $this->nameLength = $int;
+        $this->setNameLength($int);
+        $this->updateName();
         return $this;
     }
 
@@ -116,8 +120,71 @@ class FileService
      */
     public function ext(string $ext)
     {
-        $this->extension = $ext;
+        $this->setExtension($ext);
+        $this->updateName();
         return $this;
     }
+
+    /**
+     * Сохранить разрешение файла по умолчанию
+     * @return $this
+     */
+    public function extDefault()
+    {
+        $this->ext($this->extensionDefault);
+        return $this;
+    }
+
+    /**
+     * @param mixed $path
+     */
+    public function setPath($path): void
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix(string $prefix): void
+    {
+        $this->prefix = $prefix;
+    }
+
+    /**
+     * @param string $extension
+     */
+    public function setExtension(string $extension): void
+    {
+        $this->extension = $extension;
+    }
+
+    /**
+     * @param int $nameLength
+     */
+    public function setNameLength(int $nameLength): void
+    {
+        $this->nameLength = $nameLength;
+    }
+
+    /**
+     * Обновляем имя файла
+     */
+    protected function updateName(): void
+    {
+        $this->generateName($this->extension, $this->nameLength, $this->prefix);
+    }
+
+    /**
+     * Задает итоговый путь к файлу
+     */
+    protected function setFinalPath(): void
+    {
+        $this->finalDir = storage_path(Str::of($this->path)->prepend($this->mainDir)->finish('/'));
+
+        if (!is_dir($this->finalDir))
+            mkdir($this->finalDir, 666, true);
+    }
+
 
 }

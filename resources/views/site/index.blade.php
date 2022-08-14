@@ -3,23 +3,23 @@
 @section('content')
 
     <!-- Hero Section Begin -->
-{{--    @include('site.inc.main.hero')--}}
+    @include('site.inc.main.hero')
     <!-- Hero Section End -->
 
     <!-- Categories Section Begin -->
-{{--    @include('site.inc.main.categories')--}}
+    @include('site.inc.main.categories')
     <!-- Categories Section End -->
 
     <!-- Featured Section Begin -->
-{{--    @include('site.inc.main.featured')--}}
+    @include('site.inc.main.featured')
     <!-- Featured Section End -->
 
     <!-- Banner Begin -->
-{{--    @include('site.inc.main.banner')--}}
+    @include('site.inc.main.banner')
     <!-- Banner End -->
 
     <!-- Latest Product Section Begin -->
-{{--    @include('site.inc.main.last_product')--}}
+    @include('site.inc.main.last_product')
     <!-- Latest Product Section End -->
 
     <!-- Blog Section Begin -->

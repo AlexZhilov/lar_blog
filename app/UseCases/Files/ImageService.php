@@ -1,4 +1,5 @@
 <?php
+
 namespace App\UseCases\Files;
 
 use App\Category;
@@ -9,20 +10,51 @@ use Intervention\Image\Facades\Image;
 
 class ImageService extends FileService
 {
-    protected $mainDir = 'app/images/';
-
+    protected $mainDir = 'app/public/images/';
     protected $path;
     protected $extension = 'jpg';
 
+    /**
+     * Директория миниатюрных изображений,
+     * создается по соседству с основной диреткорией
+     * @var string
+     */
     private $previewDir = 'preview';
+
+    /**
+     * Объект Image
+     * @var Image
+     */
     private $image;
 
+    /**
+     * Качество изображения
+     * @var int
+     */
     private $quality = 90;
 
+    /**
+     * Ширина создаваемого изображения в px
+     * @var int
+     */
     private $imageWidth = 950;
+
+    /**
+     * Высота создаваемого изображения в px
+     * @var int
+     */
     private $imageHeight = 500;
 
+    /**
+     * Ширина создаваемой миниатюры в px
+     * @var int
+     */
     private $previewWidth = 360;
+
+    /**
+     * Высота создаваемой миниатюры в px
+     * @var int
+     */
     private $previewHeight = 260;
 
     /**
@@ -33,18 +65,63 @@ class ImageService extends FileService
      */
     public function file($fileImage = null)
     {
-        if($fileImage == null)
-            return false;
-
         $this->image = Image::make($fileImage);
+        $this->setExtensionDefault();
+
+        return $this;
+    }
+
+    /**
+     * Ресайзим главное изображение
+     *
+     * @param null $newWidth
+     * @param null $newHeight
+     * @return $this
+     */
+    public function size($newWidth = null, $newHeight = null)
+    {
+        if (!empty($newWidth))
+            $this->setImageWidth($newWidth);
+
+        if (!empty($newHeight))
+            $this->setImageHeight($newHeight);
+
+        [$width, $height] = $this->resizeImg('width');
+
+        $this->image
+            ->heighten($height)
+            ->resizeCanvas($width, $height, 'center', false, 'eeeeee');
 
 
         return $this;
     }
 
+    /**
+     * Загрузка изображения на сервер
+     * @param bool $createPreview - создать миниатюру в соседней директории $this->mainDir
+     * @param bool $safeResize
+     * @return mixed
+     */
+    public function upload($createPreview = true, $safeResize = true)
+    {
+        if ($safeResize)
+            $this->size();
 
+        $this->image->save($this->finalDir . $this->nameFile, $this->quality, $this->extension);
 
+        $this->setUploadedFiles();
 
+        if ($createPreview)
+            $this->createPreview();
+
+        return $this->uploadedFiles;
+    }
+
+    /**
+     * Качество загружаемой картинки
+     * @param int $quality
+     * @return $this
+     */
     public function quality(int $quality)
     {
         $this->quality = $quality;
@@ -52,118 +129,148 @@ class ImageService extends FileService
     }
 
     /**
-     * Ресайзим главное изображение
-     *
-     * @param null $width
-     * @param null $height
+     * Задать размеры миниатюры
+     * @param int $newWidth
+     * @param int $newHeight
      * @return $this
      */
-    public function size($width = null, $height = null)
+    public function sizePreview(int $newWidth, int $newHeight)
     {
-        $width = $width ?? $this->imageWidth;
-        $height = $height ?? $this->imageHeight;
-
-        $this->image
-            ->heighten($height)
-            ->resizeCanvas($width, $height, 'center', false, 'eeeeee');
-//        $this->image->resize($width, $height);
-
+        $this->setPreviewWidth($newWidth);
+        $this->setPreviewHeight($newHeight);
         return $this;
     }
 
     /**
-     * Нужно ли ресайзить картинку. Если ширина или высота уже
-     * меньше заданных параметров - оставляем без изменения
-     *
-     * @return bool
+     * Меняем путь для миниатюры
      */
-    private function needResize()
+    private function changeToPreviewPath()
     {
-        return $this->image->width() >= $this->imageWidth || $this->image->height() >= $this->imageHeight;
+        $this->setPath(
+            Str::of( rtrim($this->path,'/') )
+                ->beforeLast('/')
+                ->finish('/')
+                ->finish($this->previewDir)
+        );
+        $this->setFinalPath();
     }
 
-    private function createPreview($width = null, $height = null, $previewDir = null)
+    /**
+     * Загружаем миниатюру
+     */
+    private function createPreview()
     {
-        $width = $width ?? $this->previewWidth;
-        $height = $height ?? $this->previewHeight;
-        $previewDir = $previewDir ?? $this->previewDir;
-
         $preview = clone $this;
-
-        $preview->setFinalPath( $previewDir );
-
-        $preview->size($width, $height)->upload(false);
-
-    }
-
-
-    public function upload( $createPreview = true, $safeResize = true)
-    {
-
-        if($safeResize && $this->needResize())
-            $this->size();
-
-        if($createPreview)
-            $this->createPreview();
-
-        $this->generateName($this->extension, $this->nameLength, $this->prefix);
-
-        return $this->image->save($this->finalDir . $this->nameFile, $this->quality, $this->extension);
+        $preview->setImageWidth($this->previewWidth);
+        $preview->setImageHeight($this->previewHeight);
+        $preview->changeToPreviewPath();
+        $preview->upload(false);
+        $this->setUploadedFiles($preview);
     }
 
     /**
-     * Сохраняет изображение при создании или редактировании категории,
-     * или поста блога + создает уменьшеное изображение 1000x300 px.
-     *
-     * @param App\Item $item — модель категории блога или поста блога
-     * @return string|null — имя файла изображения для сохранения в БД
+     * Получить относительный путь загружаемого изображения
+     * @return string
      */
-    public function _upload()
+    private function getUploadedFiles()
     {
-
-        $this->image->height();
-
-        dd($this->image);
-        $name = $item->image;
-        if ($name && request()->remove) { // если надо удалить изображение
-            $this->remove($item);
-            $name = null;
-        }
-        $source = request()->file('image');
-        if ($source) { // если было загружено изображение
-            // перед загрузкой нового изображения удаляем старое
-            if ($item->image) {
-                $this->remove($item);
-                $name = null;
-            }
-            // сохраняем загруженное изображение на диск; $src будет
-            // содержать путь относительно хранилища вместе с именем
-            $src = $source->store($dir . '/source', 'public');
-            $name = basename($src); // имя загруженного файла
-            // создаем уменьшенное изображение 1000x300px, качество 100%
-            $dst = str_replace('source', 'image', $src);
-            $this->_resize($src, $dst, 370, 266);
-        }
-        return $name;
+        return  Str::of($this->mainDir)->finish('/') .
+                Str::of($this->path)->finish('/') .
+                $this->nameFile;
     }
 
     /**
-     * Создает уменьшенную копию изображения
-     *
-     * @param string $src — путь к исходному изображению
-     * @param string $dst — путь к уменьшенному изображению
-     * @param integer $width — ширина в пикселях
-     * @param integer $height — высота в пикселях
+     * Формируем массив всех загруженных файлов
+     * @param null $obj
+     * @return void
      */
-    private function _resize($src, $dst, $width, $height) {
-        // абсолютный путь к исходному изображению
-        $path = Storage::disk('public')->path($src);
-        $image = Image::make($path)
-            ->heighten($height)
-            ->resizeCanvas($width, $height, 'center', false, 'eeeeee')
-            ->encode(pathinfo($path, PATHINFO_EXTENSION), 100);
-        Storage::disk('public')->put($dst, $image);
-        $image->destroy();
+    private function setUploadedFiles($obj = null)
+    {
+        $obj = is_null($obj) ? $this : $obj;
+        $this->uploadedFiles[$obj->getLastUploadedDir()] = $obj->getUploadedFiles();
+    }
+
+    /**
+     * Получить название конечной загружаемой директории
+     * @return string
+     */
+    private function getLastUploadedDir()
+    {
+        return (string)Str::of( rtrim($this->finalDir, '/') )->afterLast('/');
+    }
+
+
+    /**
+     * Высчитываем пропорции изображения
+     * @param bool $side - выбор приоритетной стороны, height или width, если задан, то обрезаем по этому параметру
+     * @return array
+     */
+    private function resizeImg($side = false)
+    {
+
+        $width = $this->image->width();
+        $height = $this->image->height();
+        //Если новые пропорции больше чем оригинал - возвращаем оригинал
+        if ($this->imageWidth >= $width or $this->imageHeight >= $height)
+            return [$width, $height];
+
+        //Если выбрана приоритетная сторона Ш или В
+        if ($side == 'width' or $side == 'height')
+            $min_val = $side == 'width' ? $this->imageWidth : $this->imageHeight;
+        else //Иначе по мин стороне берем
+            $min_val = min($this->imageWidth, $this->imageHeight); //Берем мин значение Ш или В
+
+        //Определяем по наименьшему значению взятую сторону
+        if ($min_val == $this->imageWidth) { //Если это была Ш, то вычисляем пропорции для В
+            $koe = $width / $this->imageWidth;
+            $this->setImageHeight(ceil($height / $koe));
+        } else { // или для В
+            $koe = $height / $this->imageHeight;
+            $this->setimageWidth(ceil($width / $koe));
+        }
+
+        return [$this->imageWidth, $this->imageHeight];
+    }
+
+    /**
+     * Сохраняем дефолтное расширение загружаемого файла
+     */
+    private function setExtensionDefault()
+    {
+        $this->extensionDefault = Str::of($this->image->mime())->after('/');
+    }
+
+    /**
+     * @param int $imageWidth
+     */
+    private function setImageWidth(int $imageWidth): void
+    {
+        $this->imageWidth = $imageWidth;
+    }
+
+    /**
+     * @param int $imageHeight
+     */
+    private function setImageHeight(int $imageHeight): void
+    {
+        $this->imageHeight = $imageHeight;
+    }
+
+
+    /**
+     * @param int $previewWidth
+     */
+    private function setPreviewWidth(int $previewWidth): void
+    {
+        $this->previewWidth = $previewWidth;
+    }
+
+    /**
+     * @param int $previewHeight
+     */
+    private function setPreviewHeight(int $previewHeight): void
+    {
+        $this->previewHeight = $previewHeight;
     }
 
     /**
@@ -171,7 +278,8 @@ class ImageService extends FileService
      *
      * @param App\Item $item — модель категории или поста блога
      */
-    public function remove($item) {
+    public function remove($item)
+    {
 
         if (isset($item->image)) {
             Storage::disk('public')->delete($this->path . $item->image);

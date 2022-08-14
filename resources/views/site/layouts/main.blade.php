@@ -281,7 +281,8 @@
     <!-- Footer Section End -->
 
     <!-- Js -->
-    <script src="{{ asset('assets/js/scripts.js') }}"></script>
+{{--    <script src="{{ asset('assets/js/scripts.js') }}"></script>--}}
+    <script src="{{ asset('assets/js/libs.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     {!! Meta::footer()->toHtml() !!}

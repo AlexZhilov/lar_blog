@@ -14,7 +14,9 @@ const public_dir = 'public/assets';
  |
  */
 
-// *** SITE ***
+/*
+ ***** SITE *****
+ */
 mix
     // lib css
     .styles([
@@ -31,26 +33,38 @@ mix
     // lib js
     .scripts([
         'node_modules/jquery/dist/jquery.js',
-        `${resources_site}/js/popper.min.js`,
+        `${resources_site}/js/libs/popper.min.js`,
         'node_modules/bootstrap/dist/js/bootstrap.js',
-
-        `${resources_site}/js/jquery.nice-select.min.js`,
-        `${resources_site}/js/jquery-ui.min.js`,
-        `${resources_site}/js/jquery.slicknav.js`,
-        `${resources_site}/js/mixitup.min.js`,
-        `${resources_site}/js/owl.carousel.min.js`,
+        'node_modules/jquery-ui/dist/jquery-ui.min.js',
+        'node_modules/mixitup/dist/mixitup.min.js',
+        'node_modules/owl.carousel/dist/owl.carousel.min.js',
+        `${resources_site}/js/libs/jquery.nice-select.min.js`,
+        `${resources_site}/js/libs/jquery.slicknav.js`,
 
     ], `${public_dir}/js/libs.js`)
     // user js
     .js(`${resources_site}/js/main.js`, `${public_dir}/js`);
 
-// *** ADMIN ***
+/*
+ ***** ADMIN *****
+ */
 mix
+    // lib css
+    .styles([
+        `${resources_site}/css/nice-select.css`,
+        `${resources_site}/css/jquery-ui.min.css`,
+    ],`${public_dir}/admin/css/libs.css`)
     // user scss styles
     .sass(`${resources_admin}/sass/style.scss`, `${public_dir}/admin/css`)
+    // libs js
     .scripts([
-        `${resources_admin}/js/bs-custom-file-input.min.js`,
-    ],`${public_dir}/admin/js/libs.js`)
+        'node_modules/jquery/dist/jquery.js',
+        `${resources_site}/js/libs/popper.min.js`,
+        'node_modules/bootstrap/dist/js/bootstrap.js',
+        'node_modules/jquery-ui/dist/jquery-ui.min.js',
+        `${resources_admin}/js/libs/bs-custom-file-input.min.js`,
+
+    ], `${public_dir}/admin/js/libs.js`)
     // user js
     .js(`${resources_admin}/js/main.js`, `${public_dir}/admin/js`);
 

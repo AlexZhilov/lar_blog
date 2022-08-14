@@ -10,6 +10,8 @@ $(function () {
         tokenSeparators: [",", " "],
 
     });
+    /* select2 one select */
+    $(".one-select2").select2();
 
     /* Bootstrap Switch checkbox*/
     $(".switch-checkbox").bootstrapSwitch();
