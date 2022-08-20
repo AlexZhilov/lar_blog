@@ -33,9 +33,9 @@
         <link rel="stylesheet" href="{{ asset('adm/vendor/adminlte/dist/css/adminlte.min.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     @else
-        <link rel="stylesheet" href="{{ asset('public/js/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ storage('js/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset(config('laravel_mix_css_libs', 'assets/admin/css/libs.css')) }}">
-        <link rel="stylesheet" href="{{ asset('public/js/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+        <link rel="stylesheet" href="{{ storage('js/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 
         {{-- Configured Stylesheets --}}
         @include('adminlte::plugins', ['type' => 'css'])

@@ -8,6 +8,7 @@ use App\Models\Blog\Post;
 use App\Models\Blog\Tag;
 use App\UseCases\Files\ImageService;
 use DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostService
 {
@@ -29,11 +30,12 @@ class PostService
             $tags = $data->pull('tag');
             Tag::createNew( $tags );
 
-            if( $data->get('image') ){
-                $data->put('image', $this->saveImage( $data->pull('image') ));
+            $post = Post::create( $data->toArray() );
+
+            if( $data->has('image') ){
+                $data->put('image', $this->saveImage( $data->pull('image'), $post->id ));
             }
 
-            $post = Post::create( $data->toArray() );
             $post->tags()->attach( $tags );
 
             return $post;
@@ -53,8 +55,8 @@ class PostService
             Tag::createNew( $tags );
             $post->tags()->sync( $tags );
             //image
-            if( $data->get('image') ){
-                $data->put('image', $this->saveImage( $data->pull('image') ));
+            if( $data->has('image') ){
+                $data->put('image', $this->saveImage( $data->pull('image'), $post->id ));
             }
 
             $post->update( $data->toArray() );
@@ -72,14 +74,21 @@ class PostService
         $post->delete();
     }
 
+    public function removeImage(Post $post)
+    {
+        Storage::delete(storage_image($post->image));
+        Storage::delete(storage_image( ImageService::getPreview($post->image) ));
+        $post->update(['image' => '']);
+    }
 
-    private function saveImage($fileImage)
+    private function saveImage($fileImage, $prefix_id = '')
     {
         return $this->image
                 ->file( $fileImage )
                 ->dir('post/big')
-                ->prefix('post_')
+                ->prefix("post{$prefix_id}_")
                 ->upload()['big'];
     }
+
 
 }

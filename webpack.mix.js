@@ -53,6 +53,8 @@ mix
     .styles([
         `${resources_site}/css/nice-select.css`,
         `${resources_site}/css/jquery-ui.min.css`,
+        'node_modules/@fancyapps/fancybox/dist/jquery.fancybox.css',
+
     ],`${public_dir}/admin/css/libs.css`)
     // user scss styles
     .sass(`${resources_admin}/sass/style.scss`, `${public_dir}/admin/css`)
@@ -62,6 +64,7 @@ mix
         `${resources_site}/js/libs/popper.min.js`,
         'node_modules/bootstrap/dist/js/bootstrap.js',
         'node_modules/jquery-ui/dist/jquery-ui.min.js',
+        'node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js',
         `${resources_admin}/js/libs/bs-custom-file-input.min.js`,
 
     ], `${public_dir}/admin/js/libs.js`)

@@ -39,7 +39,8 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "functions.php"
+            "bootstrap/functions.php",
+            "bootstrap/helpers.php"
         ]
     },
     "scripts": {

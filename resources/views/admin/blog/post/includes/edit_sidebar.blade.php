@@ -30,7 +30,7 @@
         <div class="mt-3 form-check">
             <input type="hidden" name="is_published" value="0">
             <input type="checkbox" class="form-check-input switch-checkbox" id="is_published" name="is_published" {{ $post->is_published ? 'checked="checked"' : '' }} value="1">
-            <label class="form-check-label" for="is_published">Опубликовано</label>
+            <label class="form-check-label" for="is_published">{{ $post->is_published ? 'Опубликовано' : 'Скрыто'}}</label>
         </div>
     </div>
 

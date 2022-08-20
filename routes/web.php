@@ -41,6 +41,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admi
         Route::resource('post', 'PostController')
             ->except('show')
             ->names('admin.blog.post');
+        Route::post('post/delete-image', 'PostController@ajaxDeleteImage')->name('admin.blog.post.delete-image');
     });
 
 

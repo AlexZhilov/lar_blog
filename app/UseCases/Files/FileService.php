@@ -4,6 +4,7 @@
 namespace App\UseCases\Files;
 
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FileService
@@ -56,7 +57,17 @@ class FileService
      */
     protected $nameFile;
 
+    /**
+     * Итоговый массив загруженных файлов
+     * @var array
+     */
     protected $uploadedFiles = [];
+
+    /**
+     * Storage диск для загрузки
+     * @var string
+     */
+    protected $disk = 'public';
 
     /**
      * Генерация случайного имени файла
@@ -165,6 +176,26 @@ class FileService
     public function setNameLength(int $nameLength): void
     {
         $this->nameLength = $nameLength;
+    }
+
+    /**
+     * @param string $disk
+     */
+    public function setDisk(string $disk): void
+    {
+        $this->disk = $disk;
+    }
+
+    /**
+     * Удалить файл
+     * @param string $filePath - путь к файлу в директории storage/app/public - по умолчанию
+     * @param string $dir - внутренняя директория до файла
+     */
+    public function removeFile(string $filePath, string $dir = '')
+    {
+        $dir = !empty($dir) ? Str::of($dir)->finish('/') : '';
+
+        Storage::disk($this->disk)->delete($dir . $filePath);
     }
 
     /**

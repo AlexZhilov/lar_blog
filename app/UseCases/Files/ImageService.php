@@ -142,6 +142,34 @@ class ImageService extends FileService
     }
 
     /**
+     * Получаем превью изображения
+     * Заменяем основную директорию на директорию с превью
+     * @param $path
+     * @param string $previewNameDir
+     * @return string
+     */
+    public static function getPreview($path, $previewNameDir = 'preview')
+    {
+        if(preg_match('#^(.*)(\/.*)#', $path, $matches)){
+            [$full_path, $dir, $file] = $matches;
+            $dir = preg_replace('#([\wd_-]+)$#', $previewNameDir, $dir);
+            return $dir . $file;
+        }
+
+        return $path;
+    }
+
+    /**
+     * @param string $previewDir
+     * @return ImageService
+     */
+    public function setPreviewDir(string $previewDir): ImageService
+    {
+        $this->previewDir = $previewDir;
+        return $this;
+    }
+
+    /**
      * Меняем путь для миниатюры
      */
     private function changeToPreviewPath()
@@ -174,9 +202,7 @@ class ImageService extends FileService
      */
     private function getUploadedFiles()
     {
-        return  Str::of($this->mainDir)->finish('/') .
-                Str::of($this->path)->finish('/') .
-                $this->nameFile;
+        return Str::of($this->path)->finish('/') . $this->nameFile;
     }
 
     /**
@@ -273,19 +299,13 @@ class ImageService extends FileService
         $this->previewHeight = $previewHeight;
     }
 
-    /**
-     * Удаляет изображение при удалении категории или поста блога
-     *
-     * @param App\Item $item — модель категории или поста блога
-     */
-    public function remove($item)
+    public function remove($filePath, $withPreview = false)
     {
-
-        if (isset($item->image)) {
-            Storage::disk('public')->delete($this->path . $item->image);
-            Storage::disk('public')->delete($this->path . $item->image);
-        }
+        $mainDirFile = Str::of( rtrim($this->mainDir, '/') )->beforeLast('/');
+        d($mainDirFile);
+//        $this->removeFile();
     }
+
 
 
 }

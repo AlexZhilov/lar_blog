@@ -1,3 +1,5 @@
+import swal from 'sweetalert';
+
 $(function () {
 
     /* tooltips */
@@ -26,5 +28,64 @@ $(function () {
     /* input file */
     bsCustomFileInput.init();
 
+    /* delete image */
+    $('#delete-image').on('click', function () {
+        swal({
+          title: "Удалить изображение?",
+          text: "Данное изображение будет удалено, продолжить?",
+          icon: "warning",
+          buttons: ["Отмена", "Удалить"],
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Изображение успешно удалено!", {
+              icon: "success",
+            });
+            ajaxDelete($(this));
+          }
+        });
+    });
+
 
 })
+
+
+/**
+ * Flash-уведомление
+ * @param msg
+ * @param title
+ */
+function flash(msg, title = 'Уведомление', className = '') {
+    $(document).Toasts('create', {
+        title: title,
+        body: msg,
+        class: 'm-5 ' + className,
+        position: 'bottomRight',
+        autohide: true,
+        delay: 5000,
+    });
+}
+
+
+function ajaxDelete($this, parentElement = '.image-wrap') {
+    $.ajax({
+        type: 'post',
+        url: $this.data('url'),
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {id: $this.data('id')},
+        success: function (data) {
+            $this.parents(parentElement).fadeOut(300);
+            setTimeout(function () {
+                $this.parents(parentElement).remove();
+                flash('Изображение успешно удалено');
+                console.log(data);
+            }, 300);
+        },
+        error: function () {
+            alert('Не удалось удалить');
+        }
+    });
+}

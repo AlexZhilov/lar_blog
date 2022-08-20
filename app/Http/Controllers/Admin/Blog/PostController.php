@@ -119,4 +119,12 @@ class PostController extends BaseController
         $this->service->delete($post);
         return redirect()->route('admin.blog.post.index');
     }
+
+    public function ajaxDeleteImage()
+    {
+        $post = $this->blogPostRepository->getById(request('id'));
+        $this->service->removeImage($post);
+//        return $post;
+    }
+
 }

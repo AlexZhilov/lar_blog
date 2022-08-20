@@ -21,6 +21,12 @@ class PostRepository extends CoreRepository
         return Model::class;
     }
 
+    public function getById(int $id)
+    {
+        return $this->model()->findOrFail($id);
+    }
+
+
     /**
      * @param int $perPage
      * @return LengthAwarePaginator

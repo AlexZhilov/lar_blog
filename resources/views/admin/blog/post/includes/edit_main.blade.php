@@ -65,6 +65,24 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="main_image" class="@error('image') text-danger @enderror">Изображение</label>
+
+                            @if($post->exists && $post->image)
+                                <div class="card image-wrap m-1 mb-3" style="width: 18rem;">
+                                    <a href="{{ image("$post->image") }}" data-fancybox="gallery" data-caption="{{ $post->image }}">
+                                        <img class="card-img-top" src="{{ image("$post->image", 'preview') }}" alt="">
+                                    </a>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <span id="delete-image"
+                                                  data-url="{{ route('admin.blog.post.delete-image') }}"
+                                                  data-id="{{ $post->id }}"
+                                                  class="badge badge-warning">
+                                                Удалить
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="main_image" name="image">
@@ -100,11 +118,10 @@
                             @foreach($tags as $id => $tag)
                                 @php /** @var $tag \App\Models\Blog\Tag */ @endphp
                                 <option
-                                    @foreach($post->tags as $postTag)
-                                    {{ $postTag->id == $id ? 'selected' : ''}}
-                                    @endforeach
-                                    value="{{ $id }}">{{ $tag }}</option>
-
+                                        @foreach($post->tags as $postTag)
+                                        {{ $postTag->id == $id ? 'selected' : ''}}
+                                        @endforeach
+                                        value="{{ $id }}">{{ $tag }}</option>
                             @endforeach
                         </select>
                     </div>
