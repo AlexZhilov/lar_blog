@@ -177,7 +177,8 @@ return [
         App\Providers\MetaTagsServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+        \App\Providers\RolesServiceProvider::class,
+        \App\Providers\PermissionServiceProvider::class,
     ],
 
     /*

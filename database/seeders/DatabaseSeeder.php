@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Blog\Category;
-use App\Models\Blog\Post;
-use App\Models\Blog\Tag;
-use App\Models\User;
-use Database\Factories\UserFactory;
+use Database\Seeders\Blog\BlogSeeder;
+use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,27 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->createUsers();
-        $this->createPosts();
+        $this->call(UserSeeder::class);
+        $this->command->info('Пользователи созданы');
+
+        $this->call(BlogSeeder::class);
+        $this->command->info('Посты в блоге созданы');
     }
 
 
-    private function createPosts()
-    {
-        Category::factory(5)->create();
-        Category::factory(20)->create();
-        Tag::factory(25)->create();
-
-        foreach (Post::factory(255)->create() as $post) {
-            $post->tags()->attach( Tag::get()->random()->id );
-        }
-
-    }
-
-
-    private function createUsers()
-    {
-        User::factory()->create(UserFactory::createAdmin());
-        User::factory(20)->create();
-    }
 }

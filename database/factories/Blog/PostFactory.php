@@ -3,7 +3,7 @@
 namespace Database\Factories\Blog;
 
 use App\Models\Blog\Category;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

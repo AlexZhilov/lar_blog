@@ -21,6 +21,12 @@ Route::group(['namespace' => 'Site'], function (){
     Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function (){
         Route::get('/', 'MainController@index');
     });
+    /* USER */
+    Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function (){
+       Route::get('/', 'MainController@index')->name('lk-main');
+       Route::get('comment', 'MainController@comment')->name('lk-comment');
+       Route::get('chosen', 'MainController@chosen')->name('lk-chosen');
+    });
 
 });
 
@@ -28,7 +34,7 @@ Route::group(['namespace' => 'Site'], function (){
 
 
 /****** ADMIN ******/
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admin'], function(){
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth.admin','verified','permission:admin-access']], function(){
 
     Route::get('/', 'MainController@index')->name('admin.index');
     /* BLOG */
@@ -44,13 +50,22 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admi
         Route::post('post/delete-image', 'PostController@ajaxDeleteImage')->name('admin.blog.post.delete-image');
     });
 
+    /* USERS */
+    Route::group(['namespace' => 'User'], function (){
+        Route::resource('user', 'UserController')
+            ->except(['show'])
+            ->names('admin.user');
+        //delete-avatar
+        Route::post('user/delete-image', 'UserController@ajaxDeleteImage')->name('admin.user.delete-image');
+        //auth user
+        Route::post('user/auth-user', 'UserController@ajaxAuth')->name('admin.user.auth-user');
+    });
+
 
 });
 
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/home', function() {
-    return view('home');
-})->name('home')->middleware('auth');
+

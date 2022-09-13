@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\User\PasswordMail;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -60,10 +62,12 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return User|\Illuminate\Database\Eloquent\Model
      */
     protected function create(array $data)
     {
+        Mail::to($data['email'])->send( new PasswordMail($data['password']));
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

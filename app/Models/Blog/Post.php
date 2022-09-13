@@ -2,7 +2,7 @@
 
 namespace App\Models\Blog;
 
-use App\Models\User;
+use App\Models\User\User;
 use Carbon\Carbon;
 use Database\Factories\Blog\PostFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,13 +24,11 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property string $title
  * @property string $excerpt
  * @property string $content
- *
  * @property boolean $is_published
  * @property Carbon $published_at
  * @property Carbon $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property-read Category $category
  * @property-read User $user
  * @method static PostFactory factory(...$parameters)

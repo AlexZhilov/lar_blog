@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Category
- * @package App\Models\Blog
  *
+ * @package App\Models\Blog
  * @property int $id
  * @property int $parent_id
  * @property string $slug
@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
  * @method static CategoryFactory factory(...$parameters)
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()
@@ -41,6 +40,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Category $parent
  * @property-read Collection|Post[] $posts
  * @property-read int|null $posts_count
+ * @property-read Collection|Category[] $children
+ * @property-read int|null $children_count
+ * @method static \Illuminate\Database\Query\Builder|Category onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Category withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Category withoutTrashed()
  */
 class Category extends Model
 {

@@ -10,8 +10,14 @@ $(function () {
         allowClear: true,
         tags: [],
         tokenSeparators: [",", " "],
-
     });
+
+    /* select2 multi only choose*/
+    $(".multi-select2-only-choose").select2({
+        allowClear: true,
+        maximumSelectionLength: 2
+    });
+
     /* select2 one select */
     $(".one-select2").select2();
 
@@ -31,22 +37,40 @@ $(function () {
     /* delete image */
     $('#delete-image').on('click', function () {
         swal({
-          title: "Удалить изображение?",
-          text: "Данное изображение будет удалено, продолжить?",
-          icon: "warning",
-          buttons: ["Отмена", "Удалить"],
-          dangerMode: true,
+            title: "Удалить изображение?",
+            text: "Данное изображение будет удалено, продолжить?",
+            icon: "warning",
+            buttons: ["Отмена", "Удалить"],
+            dangerMode: true,
         })
-        .then((willDelete) => {
-          if (willDelete) {
-            swal("Изображение успешно удалено!", {
-              icon: "success",
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Изображение успешно удалено!", {
+                        icon: "success",
+                    });
+                    ajaxDelete($(this));
+                }
             });
-            ajaxDelete($(this));
-          }
-        });
     });
 
+    $('.auth-user').on('click', function (e) {
+        e.preventDefault();
+        swal({
+            title: "Авторизация",
+            text: "Авторизуемся за данного пользователя?",
+            icon: "warning",
+            buttons: ["Отмена", "Авторизация"],
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Вы авторизовались!", {
+                        icon: "success",
+                    });
+                    ajax($(this));
+                }
+            });
+    });
 
 })
 
@@ -86,6 +110,24 @@ function ajaxDelete($this, parentElement = '.image-wrap') {
         },
         error: function () {
             alert('Не удалось удалить');
+        }
+    });
+}
+
+function ajax($this, flash_msg = 'Успешно выполнено') {
+    $.ajax({
+        type: 'post',
+        url: $this.data('url'),
+        data: {id: $this.data('id')},
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            console.log(data);
+            flash(flash_msg)
+        },
+        error: function () {
+            alert('Ошибка!');
         }
     });
 }

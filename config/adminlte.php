@@ -191,7 +191,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'admin',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -260,17 +260,49 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+        /*BLOG*/
+        [
+            'text'    => 'blog',
+            'icon'    => 'fas fa-fw fa-outdent',
+            'permission' => 'blog-post-manage',
+            'submenu' => [
+                [
+                    'text' => 'post',
+                    'url'  => 'admin/blog/post/',
+                    'icon' => 'fas fa-fw fa-list-alt',
+                    'permission' => 'blog-post-manage'
+                ],
+                [
+                    'text' => 'category',
+                    'url'  => 'admin/blog/category/',
+                    'icon' => 'fas fa-fw fa-align-left',
+                    'permission' => 'blog-category-manage'
+                ],
 
-        ['header' => 'blog'],
-        [
-            'text' => 'post',
-            'url'  => 'admin/blog/post/',
-            'icon' => 'fas fa-fw fa-user',
+            ],
         ],
+        /*USERS*/
         [
-            'text' => 'category',
-            'url'  => 'admin/blog/category/',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'users',
+            'icon' => 'fas fa-fw fa-outdent',
+            'submenu' => [
+                [
+                    'text' => 'users',
+                    'url'  => 'admin/user/',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+                [
+                    'text' => 'roles',
+                    'url'  => 'admin/roles/',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+                [
+                    'text' => 'permissions',
+                    'url'  => 'admin/permissions/',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+
+            ]
         ],
 
         ['header' => 'account_settings'],

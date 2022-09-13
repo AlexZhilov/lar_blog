@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 use App\Models\Blog\Post;
+use App\Models\User\Traits\HasRolesAndPermissions;
 use Carbon\Carbon;
-use Database\Factories\UserFactory;
+use Database\Factories\User\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,11 +26,12 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property string $name
  * @property string $email
  * @property Carbon $email_verified_at
+ * @property integer $active
+ * @property string $avatar
  * @property string $password
  * @property string $remember_token
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection|Post[] $posts
@@ -49,22 +51,17 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read Collection|\App\Models\User\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @property-read Collection|\App\Models\User\Role[] $roles
+ * @property-read int|null $roles_count
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
+    protected $guarded = [];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -104,10 +101,10 @@ class User extends Authenticatable
 
 
     /**
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function posts()
     {
-        return $this->hasMany(Post::class, 'user_id');
+        return $this->belongsToMany(Post::class, 'user_id');
     }
 }

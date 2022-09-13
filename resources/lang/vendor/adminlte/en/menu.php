@@ -3,8 +3,14 @@
 return [
 
     'main_navigation'               => 'MAIN NAVIGATION',
+
     'blog'                          => 'Blog',
     'pages'                         => 'Pages',
+
+    'users'                         => 'Users',
+    'roles'                         => 'Roles',
+    'permissions'                   => 'Permissions',
+
     'account_settings'              => 'ACCOUNT SETTINGS',
     'profile'                       => 'Profile',
     'change_password'               => 'Change Password',
