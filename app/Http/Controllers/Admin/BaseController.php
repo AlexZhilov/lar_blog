@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 
-class BaseController extends Controller
+use Illuminate\Routing\Controller;
+
+abstract class BaseController extends Controller
 {
-    public $service;
-
     public function __construct()
     {
 

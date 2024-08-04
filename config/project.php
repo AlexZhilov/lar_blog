@@ -15,7 +15,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'dir_images' => 'images',
+    'dir_images' => 'public/images',
 
     'image_404_small' => '404_small.jpg',
     'image_404_big' => '404_big.jpg',

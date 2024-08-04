@@ -74,7 +74,7 @@ mix
 
 mix
     .browserSync({
-        proxy: 'http://localhost:8000/',
+        proxy: 'lar-afa.sl',
         open: false,
         files: [
             //*** views ***

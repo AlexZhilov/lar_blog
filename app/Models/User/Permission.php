@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|Permission[] $permissions
+ * @property-read int|null $permissions_count
  */
 class Permission extends Model
 {

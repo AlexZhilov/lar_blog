@@ -29,8 +29,19 @@ class RoleRepository extends CoreRepository
 
     public function getList()
     {
-        return $this->model()
-            ->where('id', '>=', auth()->user()->getMainRole()->id)
-            ->pluck('name', 'id');
+        return $this->model()->pluck('name', 'id');
+    }
+
+    public function getAvailableList()
+    {
+        $mainRole = auth()->user()->getMainRole();
+
+        if ($mainRole) {
+
+            return $this->model()
+                ->where('id', '>=', $mainRole->id)
+                ->pluck('name', 'id');
+        }
+        return [];
     }
 }

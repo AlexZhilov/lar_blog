@@ -24,23 +24,23 @@
 
     {{-- Base Stylesheets --}}
     @if(!config('adminlte.enabled_laravel_mix'))
-        <link rel="stylesheet" href="{{ asset('public/js/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('storage/public/css/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('public/js/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 
         {{-- Configured Stylesheets --}}
         @include('adminlte::plugins', ['type' => 'css'])
 
-        <link rel="stylesheet" href="{{ asset('adm/vendor/adminlte/dist/css/adminlte.min.css') }}">
+        <link rel="stylesheet" href="{{ storage('admin/vendor/adminlte/dist/css/adminlte.min.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     @else
-        <link rel="stylesheet" href="{{ storage('js/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ storage('public/css/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset(config('laravel_mix_css_libs', 'assets/admin/css/libs.css')) }}">
-        <link rel="stylesheet" href="{{ storage('js/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+        <link rel="stylesheet" href="{{ storage('public/js/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 
         {{-- Configured Stylesheets --}}
         @include('adminlte::plugins', ['type' => 'css'])
 
-        <link rel="stylesheet" href="{{ asset('adm/vendor/adminlte/dist/css/adminlte.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('storage/admin/vendor/adminlte/dist/css/adminlte.min.css') }}">
         <link rel="stylesheet" href="{{ asset(config('laravel_mix_css_main', 'assets/admin/css/style.css')) }}">
     @endif
 
@@ -78,14 +78,14 @@
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])
 
-        <script src="{{ asset('adm/vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+        <script src="{{ asset('storage/admin/vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
         <script src="{{ asset('assets/admin/js/libs.js') }}"></script>
         <script src="{{ asset('assets/admin/js/main.js') }}"></script>
     @else
         <script src="{{ asset(config('adminlte.laravel_mix_js_libs', 'assets/admin/js/libs.js')) }}"></script>
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])
-        <script src="{{ asset('adm/vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+        <script src="{{ asset('storage/admin/vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
         <script src="{{ asset(config('adminlte.laravel_mix_js_main', 'assets/admin/js/main.js')) }}"></script>
     @endif
 

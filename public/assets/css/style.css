@@ -11329,6 +11329,13 @@ ol {
   display: inline-block;
   margin-right: 15px;
 }
+.blog__item__text ul li button {
+  border: none;
+  background-color: inherit;
+}
+.blog__item__text ul li a, .blog__item__text ul li button :hover {
+  color: red;
+}
 .blog__item__text ul li:last-child {
   margin-right: 0;
 }

@@ -9289,6 +9289,11 @@ h3 {
   right: 0;
 }
 
+.form-group label.required:after {
+  content: " *";
+  color: red;
+}
+
 /* summernote */
 .note-editor.fullscreen {
   background-color: #fff;

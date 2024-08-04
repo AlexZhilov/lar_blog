@@ -15,7 +15,9 @@ use Illuminate\Http\RedirectResponse;
 class CategoryController extends BaseController
 {
 
-    private $blogCategoryRepository;
+    private CategoryService $service;
+
+    private BlogCategoryRepository $categories;
 
     public function __construct(
         CategoryService $service,
@@ -24,7 +26,7 @@ class CategoryController extends BaseController
     {
         parent::__construct();
         $this->service = $service;
-        $this->blogCategoryRepository = $blogCategoryRepository;
+        $this->categories = $blogCategoryRepository;
     }
 
     /**
@@ -35,7 +37,7 @@ class CategoryController extends BaseController
     public function index()
     {
         return view('admin.blog.category.index', [
-            'categories' => $this->blogCategoryRepository->getAllWithParentAndPaginate()
+            'categories' => $this->categories->getAllWithParentAndPaginate()
         ]);
     }
 
@@ -47,7 +49,7 @@ class CategoryController extends BaseController
      */
     public function create(Category $category)
     {
-        $categories = $this->blogCategoryRepository->getAllForDropList();
+        $categories = $this->categories->getAllForDropList();
         return view('admin.blog.category.store', compact('categories', 'category'));
     }
 
@@ -71,7 +73,7 @@ class CategoryController extends BaseController
      */
     public function edit(Category $category)
     {
-        $categories = $this->blogCategoryRepository->getAllForDropList();
+        $categories = $this->categories->getAllForDropList();
         return view('admin.blog.category.store', compact('category', 'categories'));
     }
 

@@ -17,9 +17,11 @@ use Illuminate\Http\Response;
 
 class PostController extends BaseController
 {
+    private PostService $service;
 
-    private $blogPostRepository;
-    private $blogCategoryRepository;
+    private BlogPostRepository $posts;
+
+    private BlogCategoryRepository $categories;
 
     public function __construct(
         PostService $service,
@@ -29,8 +31,8 @@ class PostController extends BaseController
     {
         parent::__construct();
         $this->service = $service;
-        $this->blogPostRepository = $blogPostRepository;
-        $this->blogCategoryRepository = $blogCategoryRepository;
+        $this->posts = $blogPostRepository;
+        $this->categories = $blogCategoryRepository;
     }
 
     /**
@@ -41,7 +43,7 @@ class PostController extends BaseController
     public function index()
     {
         return view('admin.blog.post.index',[
-            'posts' => $this->blogPostRepository->getAllWithCategoryAndPaginate()
+            'posts' => $this->posts->getAllWithCategoryAndPaginate()
         ]);
     }
 
@@ -54,7 +56,7 @@ class PostController extends BaseController
     public function create(Post $post)
     {
         $tags = Tag::pluck('title', 'id');
-        $categories = $this->blogCategoryRepository->getAllForDropList();
+        $categories = $this->categories->getAllForDropList();
         return view('admin.blog.post.store', compact('categories', 'post', 'tags'));
     }
 
@@ -89,9 +91,11 @@ class PostController extends BaseController
      */
     public function edit(Post $post)
     {
-        $tags = Tag::pluck('title', 'id');
-        $categories = $this->blogCategoryRepository->getAllForDropList();
-        return view('admin.blog.post.store', compact('post', 'categories', 'tags'));
+        return view('admin.blog.post.store', [
+            'post' => $post,
+            'categories' => $this->categories->getAllForDropList(),
+            'tags' => Tag::pluck('title', 'id')
+        ]);
     }
 
     /**
@@ -122,7 +126,7 @@ class PostController extends BaseController
 
     public function ajaxDeleteImage()
     {
-        $post = $this->blogPostRepository->getById(request('id'));
+        $post = $this->posts->getById(request('id'));
         $this->service->removeImage($post);
 //        return $post;
     }

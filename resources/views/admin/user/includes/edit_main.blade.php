@@ -31,7 +31,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="title" class="form-label @error('name') text-danger @enderror">Имя</label>
+                        <label for="title" class="form-label @error('name') text-danger @enderror">{{ __('Name') }}</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $user->name) }}">
                         @error('name')
                         <p class="text-danger">{{ $message }}</p>
@@ -61,7 +61,8 @@
                                         @foreach($user->roles as $role)
                                         {{ $role->id == $id ? 'selected' : ''}}
                                         @endforeach
-                                        value="{{ $id }}">{{ $name }}</option>
+                                        value="{{ $id }}"
+                                >{{ $name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -70,8 +71,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="main_image" class="@error('avatar') text-danger @enderror">Аватар</label>
-
+                            <label for="main_image" class="@error('avatar') text-danger @enderror">{{ __('value.avatar') }}</label>
+{{ d(image("$user->avatar")) }}
                             @if($user->exists && $user->avatar)
                                 <div class="card image-wrap m-1 mb-3" style="width: 18rem;">
                                     <a href="{{ image("$user->avatar") }}" data-fancybox="gallery" data-caption="{{ $user->avatar }}">

@@ -25,6 +25,15 @@
             display: inline-block;
             margin-right: 15px;
 
+            button {
+                border: none;
+                background-color: inherit;
+            }
+
+            a, button :hover {
+                color: red;
+            }
+
             &:last-child {
                 margin-right: 0;
             }

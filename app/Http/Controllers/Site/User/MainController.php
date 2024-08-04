@@ -7,12 +7,13 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class MainController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
      * @return Application|Factory|View
      */
     public function index()
@@ -21,24 +22,30 @@ class MainController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-    public function create()
+    public function comment()
     {
-        //
+        $comments = auth()->user()->postsComment;
+        return view('site.user.comment', compact('comments'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function like()
     {
-        //
+        $posts = auth()->user()->postsLiked;
+        return view('site.user.like', compact('posts'));
+    }
+
+    public function unlike(Post $post)
+    {
+        auth()->user()->postsLiked()->detach($post->id);
+        return back();
+    }
+
+    public function post()
+    {
+        $posts = $this->paginate(auth()->user()->posts, 3);
+        return view('site.user.post', compact('posts'));
     }
 
     /**
@@ -84,5 +91,15 @@ class MainController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function paginate($items, $perPage = 15, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

@@ -7,7 +7,7 @@
         <div class="col-12 card">
             <div class="card-body">
 
-                <a href="{{ route('admin.blog.post.create') }}" class="btn btn-primary">Создать пост</a>
+                <a href="{{ route('admin.blog.post.create') }}" class="btn btn-primary">{{ __('Create') }}</a>
 
                 <table class="table">
                     <thead>

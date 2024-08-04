@@ -16,6 +16,15 @@
   }
 }
 
+.form-group {
+  label.required{
+    &:after{
+      content: ' *';
+      color: red;
+    }
+  }
+}
+
 /* summernote */
 .note-editor{
   &.fullscreen{

@@ -17,15 +17,24 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Site'], function (){
 
     Route::get('/', 'SiteController@index')->name('home');
+
     /* BLOG */
     Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function (){
         Route::get('/', 'MainController@index');
     });
+
     /* USER */
     Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function (){
-       Route::get('/', 'MainController@index')->name('lk-main');
-       Route::get('comment', 'MainController@comment')->name('lk-comment');
-       Route::get('chosen', 'MainController@chosen')->name('lk-chosen');
+       Route::get('/', 'MainController@index')->name('lk');
+
+       /* POSTS */
+       Route::group(['prefix' => 'post'], function (){
+           Route::get('/', 'MainController@post')->name('lk.blog.post');
+           Route::get('comment', 'MainController@comment')->name('lk.blog.comment');
+           Route::get('like', 'MainController@like')->name('lk.blog.like');
+           Route::delete('unlike/{post}', 'MainController@unlike')->name('lk.blog.unlike');
+       });
+
     });
 
 });

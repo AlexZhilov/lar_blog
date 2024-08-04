@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Models\Blog\Comment;
 use App\Models\Blog\Post;
 use App\Models\User\Traits\HasRolesAndPermissions;
 use Carbon\Carbon;
@@ -10,6 +11,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -55,6 +57,12 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property-read int|null $permissions_count
  * @property-read Collection|\App\Models\User\Role[] $roles
  * @property-read int|null $roles_count
+ * @property-read Collection|Comment[] $postsComment
+ * @property-read int|null $posts_comment_count
+ * @property-read Collection|Post[] $postsLiked
+ * @property-read int|null $posts_liked_count
+ * @method static Builder|User whereActive($value)
+ * @method static Builder|User whereAvatar($value)
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -101,10 +109,20 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return HasMany
      */
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'user_id');
+        return $this->hasMany(Post::class)->orderBy('blog_posts.id', 'DESC');
+    }
+
+    public function postsLiked()
+    {
+        return $this->belongsToMany(Post::class, 'blog_post_user_likes', 'user_id');
+    }
+
+    public function postsComment()
+    {
+        return $this->hasMany(Comment::class)->with('post');
     }
 }

@@ -3,7 +3,6 @@
 
     <div class="card-header pb-2">
 
-
         <ul class="nav nav-tabs card-header-tabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="home-tab" data-toggle="tab" href="#main-info" type="button" role="tab" aria-controls="home" aria-selected="true">Основные</button>
@@ -30,35 +29,35 @@
             <div class="tab-pane fade show active" id="main-info" role="tabpanel" aria-labelledby="home-tab">
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <label for="title" class="form-label @error('title') text-danger @enderror">Заголовок</label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $post->title) }}">
-                        @error('title')
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <div class="col-md-6">
-                        <label for="category_id" class="form-label @error('category_id') text-danger @enderror">Категория</label>
-                        <select id="category_id" class="one-select2 browser-default custom-select @error('category_id') is-invalid @enderror" name="category_id">
-                            <option>Choose...</option>
-                            @foreach($categories as $id => $title)
-                                {{ $CategoryId = $post->exists ? $post->category->id : old('category_id') }}
-                                <option {{ $CategoryId == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <x-admin.form.input
+                            required
+                            class="col-md-6"
+                            name="title"
+                            :value="$post->title"
+                            :title="__('value.title')"/>
+
+                    <x-admin.form.select class="col-md-6" name="category_id" :title="__('value.category')" required>
+                        <option>Choose...</option>
+                        @foreach($categories as $id => $title)
+                            {{ $CategoryId = $post->exists ? $post->category->id : old('category_id') }}
+                            <option {{ $CategoryId == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
+                        @endforeach
+                    </x-admin.form.select>
+
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <label for="content" class="form-label @error('content') text-danger @enderror">Текст</label>
-                        <textarea class="summernote form-control @error('content') is-invalid @enderror" name="content" id="content" cols="30"
-                                  rows="10">{{ old('content', $post->content) }}</textarea>
-                        @error('content')
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
+
+                    <x-admin.form.textarea
+                            class="col-md-12"
+                            required
+                            summernote
+                            name="content"
+                            :value="$post->content"
+                            :title=" __('value.content')"
+                    />
+
                 </div>
 
                 <div class="row">
@@ -103,18 +102,22 @@
 
                 <div class="row">
 
-                    <div class="col-md-6">
-                        <label for="text" class="form-label @error('slug') text-danger @enderror">URL</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" id="text" name="slug" value="{{ old('slug', $post->slug) }}">
-                        @error('slug')
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
 
-                        <label for="select-tags" class="form-label">Теги</label>
-                        <select multiple id="select-tags" class="multi-select2 form-control" name="tag[]">
+                    <x-admin.form.input
+                            class="col-md-6"
+                            name="slug"
+                            :value="$post->slug"
+                            title="URL"/>
 
+
+                    <x-admin.form.select
+                            id="select-tags"
+                            class="col-md-6"
+                            name="tag[]"
+                            title="Теги"
+                            multiple
+                            required
+                    >
                             @foreach($tags as $id => $tag)
                                 @php /** @var $tag \App\Models\Blog\Tag */ @endphp
                                 <option
@@ -123,17 +126,15 @@
                                         @endforeach
                                         value="{{ $id }}">{{ $tag }}</option>
                             @endforeach
-                        </select>
-                    </div>
-
+                    </x-admin.form.select>
 
                 </div>
 
-                <label for="excerpt" class="form-label @error('excerpt') text-danger @enderror">Краткое Описание</label>
-                <textarea class="form-control @error('excerpt') is-invalid @enderror" name="excerpt" id="excerpt" cols="30" rows="10">{{ old('excerpt', $post->excerpt) }}</textarea>
-                @error('excerpt')
-                <p class="text-danger">{{ $message }}</p>
-                @enderror
+                <x-admin.form.textarea
+                        name="excerpt"
+                        :value="$post->excerpt"
+                        title="Краткое Описание"
+                />
 
             </div>
             <!-- END Addition info -->

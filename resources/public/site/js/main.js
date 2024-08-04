@@ -221,4 +221,8 @@
         $button.parent().find('input').val(newVal);
     });
 
+    /* tooltips */
+    $('[data-toggle="tooltip"]').tooltip();
+
+
 })(jQuery);
