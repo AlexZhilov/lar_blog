@@ -2,6 +2,13 @@
 
 @section('content')
 
+    @include('site.inc.partials.header-crumb', [
+        'title' => __('My posts'),
+        'pages' => [
+            __('User account') => 'user.index',
+        ]
+    ])
+
     <section class="blog pt-3">
 
         <div class="container">
@@ -17,13 +24,13 @@
                             @php /** @var $post \App\Models\Blog\Post */ @endphp
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="blog__item">
-{{--                                    @empty(!$post->image)--}}
-                                    <div class="blog__item__pic">
-                                        <a href="">
-                                            <img src="{{ image($post->image) }}" alt="{{ $post->title }}">
-                                        </a>
-                                    </div>
-{{--                                    @endempty--}}
+                                    @empty(!$post->image)
+                                        <div class="blog__item__pic">
+                                            <a href="">
+                                                <img src="{{ image($post->image) }}" alt="{{ $post->title }}">
+                                            </a>
+                                        </div>
+                                    @endempty
                                     <div class="blog__item__text">
                                         <h5><a href="#">{{ $post->id }} {{ $post->title }}</a></h5>
                                         <ul>
@@ -36,17 +43,10 @@
                                 </div>
                             </div>
                         @endforeach
-{{ $posts->onEachSide(1)->withQueryString()->links() }}
-{{--                        <div class="col-lg-12">--}}
-{{--                            <div class="product__pagination blog__pagination">--}}
-{{--                                <a href="#">1</a>--}}
-{{--                                <a href="#">2</a>--}}
-{{--                                <a href="#">3</a>--}}
-{{--                                <a href="#"><i class="fa fa-long-arrow-right"></i></a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        <div class="col-lg-12 mb-5">
+                            {{ $posts->onEachSide(1)->withQueryString()->links() }}
+                        </div>
                     </div>
-
 
 
                 </div>
@@ -55,7 +55,5 @@
         </div>
 
     </section>
-
-
 
 @endsection

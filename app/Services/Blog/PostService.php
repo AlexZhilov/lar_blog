@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class PostService
 {
-    private $image;
+    private ImageService $images;
 
-    public function __construct(ImageService $image)
+    public function __construct(ImageService $images)
     {
-        $this->image = $image;
+        $this->images = $images;
     }
 
     /**
@@ -25,18 +25,18 @@ class PostService
      */
     public function store($data)
     {
-        return DB::transaction(function () use ($data){
+        return DB::transaction(function () use ($data) {
 
             $tags = $data->pull('tag');
-            Tag::createNew( $tags );
+            Tag::createNew($tags);
 
-            $post = Post::create( $data->toArray() );
+            $post = Post::create($data->toArray());
 
-            if( $data->has('image') ){
-                $data->put('image', $this->saveImage( $data->pull('image'), $post->id ));
+            if ($data->has('image')) {
+                $data->put('image', $this->saveImage($data->pull('image'), $post->id));
             }
 
-            $post->tags()->attach( $tags );
+            $post->tags()->attach($tags);
 
             return $post;
         });
@@ -48,20 +48,19 @@ class PostService
      */
     public function update($data, Post $post)
     {
-
-        DB::transaction(function () use ($data, $post){
+        DB::transaction(function () use ($data, $post) {
             //tags
             $tags = $data->pull('tag');
-            Tag::createNew( $tags );
-            $post->tags()->sync( $tags );
+            Tag::createNew($tags);
+            $post->tags()->sync($tags);
             //image
-            if( $data->has('image') ){
-                $data->put('image', $this->saveImage( $data->pull('image'), $post->id ));
+            if ($data->has('image')) {
+                $data->put('image', $this->saveImage($data->pull('image'), $post->id));
             }
 
-            $post->update( $data->toArray() );
+            $post->update($data->toArray());
 
-    //        dd($data);
+            //        dd($data);
         });
 
     }
@@ -77,17 +76,17 @@ class PostService
     public function removeImage(Post $post)
     {
         Storage::delete(storage_image($post->image));
-        Storage::delete(storage_image( ImageService::getPreview($post->image) ));
+        Storage::delete(storage_image(ImageService::getPreview($post->image)));
         $post->update(['image' => '']);
     }
 
     private function saveImage($fileImage, $prefix_id = '')
     {
-        return $this->image
-                ->file( $fileImage )
-                ->dir('post/big')
-                ->prefix("post{$prefix_id}_")
-                ->upload()['big'];
+        return $this->images
+            ->file($fileImage)
+            ->dir('post/big')
+            ->prefix("post{$prefix_id}_")
+            ->upload()['big'];
     }
 
 

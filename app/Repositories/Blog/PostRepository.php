@@ -26,12 +26,7 @@ class PostRepository extends CoreRepository
         return $this->model()->findOrFail($id);
     }
 
-
-    /**
-     * @param int $perPage
-     * @return LengthAwarePaginator
-     */
-    public function getAllWithCategoryAndPaginate($perPage = 30)
+    public function getAllWithPaginate(int $perPage = 30): LengthAwarePaginator
     {
         return $this->model()
                 ->orderBy('id', 'DESC')

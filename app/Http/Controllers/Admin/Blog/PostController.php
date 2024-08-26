@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin\Blog;
 
 use App\Http\Controllers\Admin\BaseController;
-use App\Http\Requests\Admin\Blog\Post\Request as PostRequest;
+use App\Http\Requests\Admin\Blog\PostRequest;
 use App\Models\Blog\Post;
 use App\Models\Blog\Tag;
 use App\Repositories\Blog\CategoryRepository as BlogCategoryRepository;
 use App\Repositories\Blog\PostRepository as BlogPostRepository;
+use App\Repositories\User\UserRepository;
 use App\Services\Blog\PostService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -23,16 +24,20 @@ class PostController extends BaseController
 
     private BlogCategoryRepository $categories;
 
+    private UserRepository $users;
+
     public function __construct(
-        PostService $service,
-        BlogPostRepository $blogPostRepository,
-        BlogCategoryRepository $blogCategoryRepository
+        PostService            $service,
+        BlogPostRepository     $posts,
+        BlogCategoryRepository $categories,
+        UserRepository         $users
     )
     {
         parent::__construct();
         $this->service = $service;
-        $this->posts = $blogPostRepository;
-        $this->categories = $blogCategoryRepository;
+        $this->posts = $posts;
+        $this->categories = $categories;
+        $this->users = $users;
     }
 
     /**
@@ -42,8 +47,8 @@ class PostController extends BaseController
      */
     public function index()
     {
-        return view('admin.blog.post.index',[
-            'posts' => $this->posts->getAllWithCategoryAndPaginate()
+        return view('admin.blog.post.index', [
+            'posts' => $this->posts->getAllWithPaginate()
         ]);
     }
 
@@ -55,9 +60,11 @@ class PostController extends BaseController
      */
     public function create(Post $post)
     {
-        $tags = Tag::pluck('title', 'id');
-        $categories = $this->categories->getAllForDropList();
-        return view('admin.blog.post.store', compact('categories', 'post', 'tags'));
+        return view('admin.blog.post.store', [
+            'post' => $post,
+            'tags' => Tag::pluck('title', 'id'),
+            'categories' => $this->categories->getAllForDropList()
+        ]);
     }
 
     /**
@@ -68,14 +75,14 @@ class PostController extends BaseController
      */
     public function store(PostRequest $request)
     {
-        $post = $this->service->store( collect($request->validated()) );
+        $post = $this->service->store(collect($request->validated()));
         return redirect()->route('admin.blog.post.edit', $post->id);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function show($id)
@@ -94,7 +101,8 @@ class PostController extends BaseController
         return view('admin.blog.post.store', [
             'post' => $post,
             'categories' => $this->categories->getAllForDropList(),
-            'tags' => Tag::pluck('title', 'id')
+            'tags' => Tag::pluck('title', 'id'),
+            'users' => $this->users->getAllForDropList()
         ]);
     }
 
@@ -108,8 +116,8 @@ class PostController extends BaseController
     public function update(PostRequest $request, Post $post)
     {
 //        dd($request->file('image'));
-        $this->service->update( collect($request->validated()), $post );
-        return redirect()->route('admin.blog.post.edit', $post->id);
+        $this->service->update(collect($request->validated()), $post);
+        return redirect()->route('admin.blog.post.index');
     }
 
     /**

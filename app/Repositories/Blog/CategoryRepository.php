@@ -28,18 +28,17 @@ class CategoryRepository extends CoreRepository
         return $this->model()->find($id);
     }
 
-    /**
-     * @param int $perPage
-     * @return LengthAwarePaginator
-     */
-    public function getAllWithParentAndPaginate($perPage = 10)
+    public function getAllWithPaginate(int $perPage = 10): LengthAwarePaginator
     {
-        return $this->model()
+        $result = $this->model()
 //                ->select(['id','slug','title'])
-                ->orderBy('id', 'DESC')
-                ->with('parent')
-                ->withCount('posts')
-                ->paginate($perPage);
+            ->orderBy('id', 'DESC')
+            ->with('parent')
+            ->withCount('posts')
+//            ->toBase()
+            ->paginate($perPage);
+//        dd($result);
+        return $result;
     }
 
     /**

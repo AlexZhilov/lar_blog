@@ -1,4 +1,14 @@
-@php /** @var $post \App\Models\Blog\Post */ @endphp
+@php
+
+    use App\Models\Blog\Post;
+    use App\Models\Blog\Tag;
+
+ /**
+   * @var $post Post
+    *@var $tags Tag[]
+   */
+
+@endphp
 <div class="card">
 
     <div class="card-header pb-2">
@@ -38,7 +48,7 @@
                             :title="__('value.title')"/>
 
                     <x-admin.form.select class="col-md-6" name="category_id" :title="__('value.category')" required>
-                        <option>Choose...</option>
+                        <option>{{ __('Choose...') }}</option>
                         @foreach($categories as $id => $title)
                             {{ $CategoryId = $post->exists ? $post->category->id : old('category_id') }}
                             <option {{ $CategoryId == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
@@ -109,6 +119,7 @@
                             :value="$post->slug"
                             title="URL"/>
 
+                    @php  $postTags = old('tag') ?? $post->tags->pluck('id')->all() @endphp
 
                     <x-admin.form.select
                             id="select-tags"
@@ -116,16 +127,13 @@
                             name="tag[]"
                             title="Теги"
                             multiple
-                            required
                     >
-                            @foreach($tags as $id => $tag)
-                                @php /** @var $tag \App\Models\Blog\Tag */ @endphp
-                                <option
-                                        @foreach($post->tags as $postTag)
-                                        {{ $postTag->id == $id ? 'selected' : ''}}
-                                        @endforeach
-                                        value="{{ $id }}">{{ $tag }}</option>
-                            @endforeach
+                        @foreach($tags as $id => $tag)
+                            <option
+                                    {{ in_array($id, $postTags) ? 'selected' : ''}}
+                                    value="{{ $id }}">{{ $tag }}
+                            </option>
+                        @endforeach
                     </x-admin.form.select>
 
                 </div>
@@ -134,6 +142,7 @@
                         name="excerpt"
                         :value="$post->excerpt"
                         title="Краткое Описание"
+                        required
                 />
 
             </div>

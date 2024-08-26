@@ -11384,20 +11384,19 @@ ol {
 /*---------------------
   Blog Sidebar
 -----------------------*/
-.blog__sidebar {
-  padding-top: 50px;
-}
-
 .blog__sidebar__item {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 .blog__sidebar__item h4 {
   color: #1c1c1c;
   font-weight: 700;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 .blog__sidebar__item ul li {
   list-style: none;
+}
+.blog__sidebar__item ul li.active a {
+  color: #7fad39;
 }
 .blog__sidebar__item ul li a {
   font-size: 16px;

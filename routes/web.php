@@ -25,14 +25,14 @@ Route::group(['namespace' => 'Site'], function (){
 
     /* USER */
     Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function (){
-       Route::get('/', 'MainController@index')->name('lk');
+       Route::get('/', 'MainController@index')->name('user.index');
 
        /* POSTS */
        Route::group(['prefix' => 'post'], function (){
-           Route::get('/', 'MainController@post')->name('lk.blog.post');
-           Route::get('comment', 'MainController@comment')->name('lk.blog.comment');
-           Route::get('like', 'MainController@like')->name('lk.blog.like');
-           Route::delete('unlike/{post}', 'MainController@unlike')->name('lk.blog.unlike');
+           Route::get('/', 'MainController@post')->name('user.blog.post');
+           Route::get('comment', 'MainController@comment')->name('user.blog.comment');
+           Route::get('like', 'MainController@like')->name('user.blog.like');
+           Route::delete('unlike/{post}', 'MainController@unlike')->name('user.blog.unlike');
        });
 
     });

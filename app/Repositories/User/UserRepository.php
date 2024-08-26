@@ -8,6 +8,7 @@ use App\Models\User\User as Model;
 class UserRepository extends CoreRepository
 {
 
+
     protected function getModel()
     {
         return Model::class;
@@ -27,4 +28,8 @@ class UserRepository extends CoreRepository
             ->paginate($perPage);
     }
 
+    public function getAllForDropList()
+    {
+        return $this->model()->pluck('name', 'id')->all();
+    }
 }

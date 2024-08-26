@@ -18,7 +18,7 @@ class MainController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return view('site.index', compact('posts'));
+        return view('site.blog.index', compact('posts'));
     }
 
     /**

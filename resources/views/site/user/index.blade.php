@@ -4,9 +4,6 @@
 
     @include('site.inc.partials.header-crumb', [
         'title' => 'Личный кабинет',
-        'pages' => [
-            'Категория' => 'admin.blog.post.index'
-        ]
     ])
 
     <section class="blog pt-3">

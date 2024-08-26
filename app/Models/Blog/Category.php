@@ -56,7 +56,7 @@ class Category extends Model
     /**
      * @return HasMany
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
@@ -64,13 +64,13 @@ class Category extends Model
     /**
      * @return BelongsTo
      */
-    public function parent()
+    public function parent(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
-    public function children()
+    public function children(): HasMany
     {
-        return $this->hasMany(Category::class, 'parent_id')->with('parent');
+        return $this->hasMany(self::class, 'parent_id')->with('parent');
     }
 }

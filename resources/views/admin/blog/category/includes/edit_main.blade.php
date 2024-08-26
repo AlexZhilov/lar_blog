@@ -2,37 +2,40 @@
 <div class="card">
     <div class="card-body">
 
-            <label for="title" class="form-label @error('title') text-danger @enderror">Заголовок</label>
-            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $category->title) }}">
-            @error('title')
-            <p class="text-danger">{{ $message }}</p>
-            @enderror
+        <div class="row">
+            <x-admin.form.input
+                    class="col-md-6"
+                    name="title"
+                    :value="$category->title"
+                    :title="__('Title')"/>
+
+        </div>
 
         <div class="row">
 
-            <div class="col">
-                <label for="text" class="form-label @error('slug') text-danger @enderror">URL</label>
-                <input type="text" class="form-control @error('slug') is-invalid @enderror" id="text" name="slug" value="{{ old('slug', $category->slug) }}">
-                @error('slug')
-                <p class="text-danger">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="col">
-                <label for="category_id" class="form-label @error('parent_id') text-danger @enderror">Родитель</label>
-                <select id="category_id" class="browser-default custom-select form-select @error('parent_id') is-invalid @enderror" name="parent_id">
-                    <option>Choose...</option>
-                    @foreach($categories as $id => $title)
-                        <option {{ old('parent_id') == $id || $category->parent_id == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+            <x-admin.form.input
+                    class="col"
+                    name="slug"
+                    :value="$category->slug"
+                    :title="__('URL')"/>
 
-        <label for="description" class="form-label @error('description') text-danger @enderror">Описание</label>
-        <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" cols="30" rows="10">{{ old('description', $category->description) }}</textarea>
-        @error('description')
-        <p class="text-danger">{{ $message }}</p>
-        @enderror
+            <x-admin.form.select class="col" name="parent_id" :title="__('Parent')">
+                <option>{{ __('Choose...') }}</option>
+                @foreach($categories as $id => $title)
+                    <option {{ old('parent_id') == $id || $category->parent_id == $id ? 'selected' : ''}} value="{{ $id }}">{{ $title }}</option>
+                @endforeach
+            </x-admin.form.select>
+
+            <x-admin.form.textarea
+                    class="col-md-12"
+                    required
+                    summernote
+                    name="description"
+                    :value="$category->description"
+                    :title=" __('Description')"
+            />
+
+        </div>
 
     </div>
 </div>

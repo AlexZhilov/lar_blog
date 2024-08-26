@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -39,7 +40,7 @@ class Tag extends Model
 
     protected $table = 'blog_tags';
 
-    public function posts()
+    public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'blog_post_tag');
     }

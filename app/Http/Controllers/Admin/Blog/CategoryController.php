@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Blog;
 
 use App\Http\Controllers\Admin\BaseController;
-use App\Http\Requests\Admin\Blog\Category\Request as CategoryRequest;
+use App\Http\Requests\Admin\Blog\CategoryRequest as CategoryRequest;
 use App\Models\Blog\Category;
 use App\Repositories\Blog\CategoryRepository as BlogCategoryRepository;
 use App\Services\Blog\CategoryService;
@@ -37,7 +37,7 @@ class CategoryController extends BaseController
     public function index()
     {
         return view('admin.blog.category.index', [
-            'categories' => $this->categories->getAllWithParentAndPaginate()
+            'categories' => $this->categories->getAllWithPaginate()
         ]);
     }
 

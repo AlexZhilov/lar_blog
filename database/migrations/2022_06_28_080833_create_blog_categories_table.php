@@ -16,10 +16,10 @@ class CreateBlogCategoriesTable extends Migration
         Schema::create('blog_categories', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('parent_id')->default(1)->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
 
-            $table->string('slug')->unique();
             $table->string('title');
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
 
             $table->timestamps();

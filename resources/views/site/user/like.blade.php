@@ -2,6 +2,14 @@
 
 @section('content')
 
+    @include('site.inc.partials.header-crumb', [
+        'title' => __('Personal account'),
+        'pages' => [
+            'Категория' => 'admin.blog.post.index'
+        ]
+    ])
+
+
     <section class="blog pt-3">
 
         <div class="container">
