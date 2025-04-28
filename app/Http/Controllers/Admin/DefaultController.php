@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-class MainController extends BaseController
+class DefaultController extends BaseController
 {
     public function index()
     {

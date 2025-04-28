@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * Получение подготовленного набора данных из модели
  */
-abstract class CoreRepository
+abstract class BaseRepository
 {
     /**
      * @var Model of repository

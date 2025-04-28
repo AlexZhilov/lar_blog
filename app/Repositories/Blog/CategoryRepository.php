@@ -4,11 +4,11 @@
 namespace App\Repositories\Blog;
 
 use App\Models\Blog\Category as Model;
-use App\Repositories\CoreRepository;
+use App\Repositories\BaseRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class CategoryRepository extends CoreRepository
+class CategoryRepository extends BaseRepository
 {
 
     /**

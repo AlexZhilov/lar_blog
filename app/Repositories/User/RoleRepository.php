@@ -2,10 +2,11 @@
 
 namespace App\Repositories\User;
 
-use App\Repositories\CoreRepository;
 use App\Models\User\Role as Model;
+use App\Repositories\BaseRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-class RoleRepository extends CoreRepository
+class RoleRepository extends BaseRepository
 {
     protected function getModel()
     {
@@ -43,5 +44,12 @@ class RoleRepository extends CoreRepository
                 ->pluck('name', 'id');
         }
         return [];
+    }
+
+    public function getAllWithPaginate($perPage = 20): LengthAwarePaginator
+    {
+        return $this->model()
+            ->with(['permissions'])
+            ->paginate($perPage);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Admin\BaseController;
+use App\Http\Requests\Admin\User\UserCreateRequest;
+use App\Http\Requests\Admin\User\UserUpdateRequest;
 use App\Models\User\Permission;
 use App\Models\User\Role;
 use App\Models\User\User;
@@ -68,7 +70,7 @@ class UserController extends BaseController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(UserCreateRequest $request)
     {
         //
     }
@@ -106,9 +108,9 @@ class UserController extends BaseController
      * @param User $user
      * @return RedirectResponse
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        $this->service->update(collect($request->validated()), $user);
+        $this->service->update($request, $user);
         return redirect()->route('admin.user.edit', $user->id);
     }
 

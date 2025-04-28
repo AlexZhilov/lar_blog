@@ -2,10 +2,11 @@
 
 namespace App\Repositories\User;
 
-use App\Repositories\CoreRepository;
 use App\Models\User\Permission as Model;
+use App\Repositories\BaseRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-class PermissionRepository extends CoreRepository
+class PermissionRepository extends BaseRepository
 {
 
     protected function getModel()
@@ -26,6 +27,18 @@ class PermissionRepository extends CoreRepository
     public function getBySlugIn(array $slugArr)
     {
         return $this->model()->whereIn('slug', $slugArr)->get();
+    }
+
+    public function getList()
+    {
+        return $this->model()->pluck('name', 'id');
+    }
+
+    public function getAllWithPaginate($perPage = 20): LengthAwarePaginator
+    {
+        return $this->model()
+            ->with(['roles', 'users'])
+            ->paginate($perPage);
     }
 
 }

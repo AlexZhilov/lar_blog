@@ -1,3 +1,8 @@
+@php
+    Meta::setTitle('Home')
+    ->setDescription('Home page description');
+@endphp
+
 @extends('site.layouts.main')
 
 @section('content')

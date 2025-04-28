@@ -4,7 +4,7 @@
 namespace App\Repositories\Blog;
 
 use App\Models\Blog\Post as Model;
-use App\Repositories\CoreRepository;
+use App\Repositories\BaseRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
@@ -13,7 +13,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
  *
  * @method Model model()
  */
-class PostRepository extends CoreRepository
+class PostRepository extends BaseRepository
 {
 
     protected function getModel()

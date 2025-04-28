@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\User\Permission
@@ -36,13 +37,13 @@ class Permission extends Model
 
     protected $guarded = [];
 
-    public function permissions()
+    public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'roles_permissions');
+        return $this->belongsToMany(Role::class, 'roles_permissions');
     }
 
-    public function users()
+    public function users(): BelongsToMany
     {
-        $this->belongsToMany(User::class, 'users_permissions');
+        return $this->belongsToMany(User::class, 'users_permissions');
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Repositories\User;
 
-use App\Repositories\CoreRepository;
+use App\Repositories\BaseRepository;
 use App\Models\User\User as Model;
 
-class UserRepository extends CoreRepository
+class UserRepository extends BaseRepository
 {
 
 

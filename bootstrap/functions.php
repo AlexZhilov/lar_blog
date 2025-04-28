@@ -22,3 +22,14 @@ if( !function_exists('d')){
             die;
     }
 }
+
+if (!function_exists('is_active_route')) {
+    /**
+     * @param $route
+     * @return bool
+     */
+    function is_active_route($route)
+    {
+        return request()->routeIs($route) ? 'active' : '';
+    }
+}
