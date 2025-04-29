@@ -214,6 +214,8 @@
 </header>
 <!-- Header Section End -->
 
+{{ Breadcrumbs::render() }}
+
 @yield('content')
 
 <!-- Footer Section Begin -->

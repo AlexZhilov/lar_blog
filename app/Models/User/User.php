@@ -106,8 +106,15 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    ####### CONDITIONS #######
+
+    public function isActive(): bool
+    {
+        return !is_null($this->email_verified_at);
+    }
 
 
+    ####### RELATIONS #######
 
     public function posts(): HasMany
     {

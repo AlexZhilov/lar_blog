@@ -9,6 +9,9 @@
 {{-- Default Content Wrapper --}}
 <div class="content-wrapper {{ config('adminlte.classes_content_wrapper', '') }}">
 
+    {{-- Breadcrumbs --}}
+    @include('vendor.adminlte.partials.navbar.breadcrumbs', ['breadcrumbs' => Breadcrumbs::generate()])
+
     {{-- Content Header --}}
     @hasSection('content_header')
         <div class="content-header">
