@@ -11,6 +11,7 @@ use App\Repositories\Blog\PostRepository as BlogPostRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Blog\PostService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class PostController extends BaseController
 {
@@ -32,10 +33,12 @@ class PostController extends BaseController
         $this->users = $users;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         return view('admin.blog.post.index', [
-            'posts' => $this->posts->getAllWithPaginate()
+            'posts' => $this->posts->getAllWithPaginate($request),
+            'users' => $this->users->getAllForDropList(),
+            'categories' => $this->categories->getAllForDropList()
         ]);
     }
 

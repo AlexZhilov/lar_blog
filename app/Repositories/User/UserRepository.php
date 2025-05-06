@@ -5,6 +5,7 @@ namespace App\Repositories\User;
 use App\Filters\User\LastLoginFilter;
 use App\Repositories\BaseRepository;
 use App\Models\User\User as Model;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -16,8 +17,8 @@ class UserRepository extends BaseRepository
         return Model::class;
     }
 
-        public function getAllWithPaginate(Request $request, $perPage = 20)
-    {
+        public function getAllWithPaginate(Request $request, $perPage = 20): LengthAwarePaginator
+        {
         return QueryBuilder::for($this->model())
             ->allowedFilters([
                 'id',
