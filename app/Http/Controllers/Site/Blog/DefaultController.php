@@ -2,89 +2,56 @@
 
 namespace App\Http\Controllers\Site\Blog;
 
-use App\Http\Controllers\Site\Controller;
+use App\Http\Controllers\Site\BaseController;
+use App\Models\Blog\Category;
 use App\Models\Blog\Post;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
+use App\Models\Blog\Tag;
+use App\Repositories\Blog\CategoryRepository;
+use App\Repositories\Blog\PostRepository;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
-     */
+    private PostRepository $posts;
+//    private CategoryRepository $categories;
+
+    public function __construct(
+        PostRepository $posts,
+        CategoryRepository $categories
+    )
+    {
+        $this->posts = $posts;
+//        $this->categories = $categories;
+
+        parent::__construct();
+    }
+
     public function index()
     {
-        $posts = Post::all();
-        return view('site.blog.index', compact('posts'));
+        return view('site.blog.index', [
+            'posts' => $this->posts->getAllActiveWithPaginate(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function category(Category $category)
     {
-        //
+        return view('site.blog.index', [
+            'posts' => $this->posts->getAllActiveByCategoryWithPaginate($category)
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function post(Category $category, Post $post)
     {
-        //
+        return view('site.blog.post', [
+            'category' => $category,
+            'post' => $post
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function tag(Tag $tag)
     {
-        //
+        return view('site.blog.index', [
+            'posts' => $tag->posts()->paginate(10)
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

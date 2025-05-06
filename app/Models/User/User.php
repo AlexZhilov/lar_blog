@@ -28,7 +28,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property string $name
  * @property string $email
  * @property Carbon $email_verified_at
- * @property integer $active
+ * @property Carbon $last_activity
  * @property string $avatar
  * @property string $password
  * @property string $remember_token
@@ -52,7 +52,6 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @mixin \Eloquent
  * @property-read Collection|\App\Models\User\Permission[] $permissions
  * @property-read int|null $permissions_count
  * @property-read Collection|\App\Models\User\Role[] $roles
@@ -63,6 +62,14 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property-read int|null $posts_liked_count
  * @method static Builder|User whereActive($value)
  * @method static Builder|User whereAvatar($value)
+ * @property string|null $deleted_at
+ * @property-read string $created_at_format
+ * @property-read string $deleted_at_format
+ * @property-read string $last_activity_format
+ * @property-read string $updated_at_format
+ * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereLastActivity($value)
+ * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -87,6 +94,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_activity' => 'datetime',
     ];
 
 
@@ -106,6 +114,35 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    ####### ACCESSORS #######
+
+    public function getUpdatedAtFormatAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y H:i');
+    }
+
+    public function getCreatedAtFormatAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y H:i');
+    }
+
+    public function getDeletedAtFormatAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y H:i');
+    }
+
+    public function getLastActivityFormatAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y H:i');
+    }
+
+    ####### ACTIONS #######
+
+    public function updateLastActivity(): void
+    {
+        $this->updateQuietly(['last_activity' => now()]);
+    }
+
     ####### CONDITIONS #######
 
     public function isActive(): bool
@@ -115,6 +152,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     ####### RELATIONS #######
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'users_permissions');
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'users_roles');
+    }
 
     public function posts(): HasMany
     {

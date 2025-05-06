@@ -24,7 +24,6 @@ class CategoryController extends BaseController
         BlogCategoryRepository $blogCategoryRepository
     )
     {
-        parent::__construct();
         $this->service = $service;
         $this->categories = $blogCategoryRepository;
     }

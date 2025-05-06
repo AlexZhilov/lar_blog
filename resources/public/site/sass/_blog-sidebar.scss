@@ -122,5 +122,10 @@
     padding: 7px 26px 5px;
     margin-right: 6px;
     margin-bottom: 10px;
+
+    &.active {
+      background: $primary-color;
+      color: $white-color;
+    }
   }
 }

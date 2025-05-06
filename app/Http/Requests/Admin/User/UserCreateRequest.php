@@ -16,10 +16,11 @@ class UserCreateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', "unique:users,email"],
-            'password' => ['string'],
+            'password' => ['string', 'required', 'min:6'],
             'active' => ['boolean'],
             'avatar' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
             'roles' => ['array', 'required', 'exists:roles,id'],
+            'permissions' => ['array', 'nullable', 'exists:permissions,id'],
         ];
     }
 }

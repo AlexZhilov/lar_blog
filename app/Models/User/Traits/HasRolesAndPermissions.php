@@ -41,6 +41,24 @@ trait HasRolesAndPermissions
         return false;
     }
 
+    public function attachRole(...$roles): void
+    {
+        foreach ($roles as $role) {
+            $this->roles()->attach(Role::where('slug', $role)->first());
+        }
+    }
+
+
+    public function isRoot(): bool
+    {
+        return $this->hasRole('root');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('root', 'admin');
+    }
+
     /**
      * Имеет текущий пользователь право $permission либо напрямую,
      * либо через одну из своих ролей?

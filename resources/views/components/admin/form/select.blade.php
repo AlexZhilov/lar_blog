@@ -3,7 +3,8 @@
     'id' => $id ?? $name,
     'title',
     'required' => false,
-    'multiple' => false
+    'multiple' => false,
+    'tags' => false
 ])
 
 <div {{ $attributes->merge(['class' => 'form-group']) }}>
@@ -17,7 +18,7 @@
     <select
             @if($multiple) multiple @endif
             id="{{ $id }}"
-            class="one-select2 form-control browser-default custom-select @error($name) is-invalid @enderror {{ $multiple ? 'multiple' : '' }}"
+            class="one-select2 @if($tags) tags @endif form-control browser-default custom-select @error($name) is-invalid @enderror {{ $multiple ? 'multiple' : '' }}"
             name="{{ $name }}">
         {{ $slot }}
     </select>

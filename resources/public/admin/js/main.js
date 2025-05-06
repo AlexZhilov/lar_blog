@@ -1,5 +1,92 @@
 import swal from 'sweetalert';
 
+(function ($) {
+    'use strict';
+
+    const admin = {
+        deleteUserImage: function () {
+            $('#delete-image').on('click', function () {
+                swal({
+                    title: "Удалить изображение?",
+                    text: "Данное изображение будет удалено, продолжить?",
+                    icon: "warning",
+                    buttons: ["Отмена", "Удалить"],
+                    dangerMode: true,
+                })
+                    .then((response) => {
+                        if (response) {
+                            swal("Изображение успешно удалено!", {
+                                icon: "success",
+                            });
+                            ajaxDelete($(this));
+                        }
+                    });
+            });
+
+        },
+
+        authUserBtn: function () {
+            $('.auth-user').on('click', function (e) {
+                e.preventDefault();
+                swal({
+                    title: "Авторизация",
+                    text: "Авторизуемся за данного пользователя?",
+                    icon: "warning",
+                    buttons: ["Отмена", "Авторизация"],
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            swal("Вы авторизовались!", {
+                                icon: "success",
+                            });
+                            ajax($(this));
+                        }
+                    });
+            });
+        },
+
+        minimizeSidebar: function () {
+            const $body = $('body.sidebar-mini');
+            const $btn = $body.find('.main-header .navbar-nav .nav-item .nav-link[data-widget="pushmenu"]');
+
+            if (localStorage.getItem('sidebarCollapsed') === 'false') {
+                $body.addClass('sidebar-collapse');
+            }
+            $btn.on('click', function () {
+                localStorage.setItem('sidebarCollapsed', $body.hasClass('sidebar-collapse'));
+            });
+
+        },
+
+        /* filter panel */
+        filterPanel: function () {
+            const panel = $('#filterCollapse');
+            if (localStorage.getItem('filterCollapsed') === 'true') {
+                panel.collapse('hide');
+            }
+
+            panel.on('hide.bs.collapse', function () {
+                localStorage.setItem('filterCollapsed', 'true');
+            });
+            panel.on('show.bs.collapse', function () {
+                localStorage.setItem('filterCollapsed', 'false');
+            });
+        },
+
+        init: function () {
+            admin.deleteUserImage();
+            admin.authUserBtn();
+            admin.filterPanel();
+            admin.minimizeSidebar();
+        }
+    };
+
+    admin.init();
+
+})(jQuery);
+
+
 $(function () {
 
     /* tooltips */
@@ -21,6 +108,12 @@ $(function () {
     /* select2 one select */
     $(".one-select2").select2();
 
+    /* select2 one select tags*/
+    $(".one-select2.tags").select2({
+        tags: true,
+        tokenSeparators: [",", " "],
+    });
+
     /* Bootstrap Switch checkbox*/
     $(".switch-checkbox").bootstrapSwitch();
 
@@ -34,42 +127,22 @@ $(function () {
     /* input file */
     bsCustomFileInput.init();
 
-    /* delete image */
-    $('#delete-image').on('click', function () {
-        swal({
-            title: "Удалить изображение?",
-            text: "Данное изображение будет удалено, продолжить?",
-            icon: "warning",
-            buttons: ["Отмена", "Удалить"],
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("Изображение успешно удалено!", {
-                        icon: "success",
-                    });
-                    ajaxDelete($(this));
-                }
-            });
+    // Автоматическая отправка формы при изменении количества элементов на странице
+    $('select[name="per_page"]').change(function () {
+        $(this).closest('form').submit();
     });
 
-    $('.auth-user').on('click', function (e) {
-        e.preventDefault();
-        swal({
-            title: "Авторизация",
-            text: "Авторизуемся за данного пользователя?",
-            icon: "warning",
-            buttons: ["Отмена", "Авторизация"],
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("Вы авторизовались!", {
-                        icon: "success",
-                    });
-                    ajax($(this));
-                }
-            });
+    // Инициализация DateRangePicker для фильтра дат
+    $('input[name="filter[created_between]"]').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: '2020:' + (new Date()).getFullYear(),
+        maxDate: new Date(),
+        dateFormat: 'yy-mm-dd',
+        onSelect: function (dateText, inst) {
+            $(this).trigger('change');
+        }
+
     });
 
 })

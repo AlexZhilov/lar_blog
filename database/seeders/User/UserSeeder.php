@@ -21,8 +21,7 @@ class UserSeeder extends Seeder
         $this->call(RoleSeeder::class);
 
         $this->createAdminUsers();
-
-        User::factory(20)->create();
+        $this->createUsers(20);
     }
 
     private function createAdminUsers()
@@ -44,7 +43,14 @@ class UserSeeder extends Seeder
         }
     }
 
+    private function createUsers($count): void
+    {
+        $users = User::factory($count)->create();
 
+        foreach ($users as $user) {
+            $user->roles()->attach((new RoleRepository)->getBySlug('user'));
+        }
+    }
 
 
 }

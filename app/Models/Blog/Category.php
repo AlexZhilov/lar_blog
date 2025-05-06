@@ -36,7 +36,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder|Category whereSlug($value)
  * @method static Builder|Category whereTitle($value)
  * @method static Builder|Category whereUpdatedAt($value)
- * @mixin \Eloquent
  * @property-read Category $parent
  * @property-read Collection|Post[] $posts
  * @property-read int|null $posts_count
@@ -45,6 +44,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Category onlyTrashed()
  * @method static \Illuminate\Database\Query\Builder|Category withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Category withoutTrashed()
+ * @mixin \Eloquent
  */
 class Category extends Model
 {
@@ -52,6 +52,13 @@ class Category extends Model
 
     protected $table = 'blog_categories';
     protected $guarded = [];
+
+    #### SCOPES ####
+
+    public function scopeSlug($query, $slug)
+    {
+        return $query->where('slug', $slug);
+    }
 
     /**
      * @return HasMany

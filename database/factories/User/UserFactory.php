@@ -18,8 +18,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'active' => random_int(0,100) < 90 ? 1 : 0,
+            'email_verified_at' => random_int(0,10) > 3 ? now() : null,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
@@ -32,7 +31,6 @@ class UserFactory extends Factory
                 'name' => env('ADMIN_USERNAME','admin'),
                 'email' => env('ADMIN_EMAIL','admin@admin.ru'),
                 'email_verified_at' => now(),
-                'active' => 1,
                 'password' => Hash::make(env('ADMIN_PASSWORD','12345678')), // password
                 'remember_token' => Str::random(10),
             ],
@@ -40,7 +38,6 @@ class UserFactory extends Factory
                 'name' => 'manager',
                 'email' => 'manager@manager.ru',
                 'email_verified_at' => now(),
-                'active' => 1,
                 'password' => Hash::make('12345678'), // password
                 'remember_token' => Str::random(10),
             ]

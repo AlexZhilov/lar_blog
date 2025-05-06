@@ -10,13 +10,19 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CategoryRepository extends BaseRepository
 {
-
-    /**
-     * @return mixed|string
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return Model::class;
+    }
+
+    public function getAll()
+    {
+        return $this->model()->all();
+    }
+
+    public function getCategoryBySlug($slug)
+    {
+        return $this->model()->slug($slug)->first();
     }
 
     /**

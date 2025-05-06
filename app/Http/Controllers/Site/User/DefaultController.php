@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Site\User;
 
-use App\Http\Controllers\Site\Controller;
+use App\Http\Controllers\Site\BaseController;
 use App\Models\Blog\Post;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -12,7 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     /**
      * @return Application|Factory|View

@@ -10742,8 +10742,11 @@ ol {
 
 .product__pagination, .blog__pagination {
   padding-top: 10px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
-.product__pagination a, .blog__pagination a {
+.product__pagination a, .blog__pagination a, .product__pagination span, .blog__pagination span {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -10757,16 +10760,19 @@ ol {
   transition: all, 0.3s;
 }
 @media (prefers-reduced-motion: reduce) {
-  .product__pagination a, .blog__pagination a {
+  .product__pagination a, .blog__pagination a, .product__pagination span, .blog__pagination span {
     transition: none;
   }
 }
-.product__pagination a:hover, .blog__pagination a:hover {
+.product__pagination a:hover, .blog__pagination a:hover, .product__pagination a.active, .blog__pagination a.active, .product__pagination span:hover, .blog__pagination span:hover, .product__pagination span.active, .blog__pagination span.active {
   background: #7fad39;
   border-color: #7fad39;
   color: #ffffff;
 }
-.product__pagination a:last-child, .blog__pagination a:last-child {
+.product__pagination a.disabled, .blog__pagination a.disabled, .product__pagination a.active, .blog__pagination a.active, .product__pagination span.disabled, .blog__pagination span.disabled, .product__pagination span.active, .blog__pagination span.active {
+  pointer-events: none;
+}
+.product__pagination a:last-child, .blog__pagination a:last-child, .product__pagination span:last-child, .blog__pagination span:last-child {
   margin-right: 0;
 }
 
@@ -11314,6 +11320,9 @@ ol {
 
 .blog__item__pic img {
   min-width: 100%;
+  max-height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .blog__item__text {
@@ -11487,6 +11496,10 @@ ol {
   margin-right: 6px;
   margin-bottom: 10px;
 }
+.blog__sidebar__item__tags a.active {
+  background: #7fad39;
+  color: #ffffff;
+}
 
 /*---------------------
   Blog Details Hero
@@ -11547,18 +11560,19 @@ ol {
 .blog__details__text {
   margin-bottom: 45px;
 }
+.blog__details__text h1 {
+  color: #333333;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 30px;
+  font-size: 27px;
+}
 .blog__details__text img {
   margin-bottom: 30px;
 }
 .blog__details__text p {
   font-size: 18px;
   line-height: 30px;
-}
-.blog__details__text h3 {
-  color: #333333;
-  font-weight: 700;
-  line-height: 30px;
-  margin-bottom: 30px;
 }
 
 .blog__details__author__pic {

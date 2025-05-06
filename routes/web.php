@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Blog\Tag;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Site\Blog\DefaultController as BlogDefaultController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +23,10 @@ Route::group(['namespace' => 'Site'], function () {
 
     /* BLOG */
     Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function () {
-        Route::get('/', 'DefaultController@index')->name('blog');
+        Route::get('/', [BlogDefaultController::class, 'index'])->name('blog');
+        Route::get('tag/{tag:slug}', [BlogDefaultController::class, 'tag'])->name('blog.tag');
+        Route::get('{category:slug}', [BlogDefaultController::class, 'category'])->name('blog.category');
+        Route::get('{category:slug}/{post:slug}', [BlogDefaultController::class, 'post'])->name('blog.post');
     });
 
     /* SHOP */

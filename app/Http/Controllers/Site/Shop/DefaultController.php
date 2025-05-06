@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Site\Shop;
 
 
-use App\Http\Controllers\Site\Controller;
+use App\Http\Controllers\Site\BaseController;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     public function index()
     {

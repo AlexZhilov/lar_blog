@@ -52,7 +52,6 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static Builder|Post whereUserId($value)
  * @method static QueryBuilder|Post withTrashed()
  * @method static QueryBuilder|Post withoutTrashed()
- * @mixin \Eloquent
  * @property string|null $image
  * @property int $views
  * @property-read Collection|Tag[] $tags
@@ -60,6 +59,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static Builder|Post whereContent($value)
  * @method static Builder|Post whereImage($value)
  * @method static Builder|Post whereViews($value)
+ * @method static Builder|Post published()
+ * @mixin \Eloquent
  */
 class Post extends Model
 {
@@ -73,6 +74,15 @@ class Post extends Model
         'published_at',
         'deleted_at',
     ];
+
+    #### SCOPES ####
+
+    public function scopePublished(Builder $builder): void
+    {
+        $builder->where('is_published', true);
+    }
+
+    #### RELATIONS ####
 
     public function category(): BelongsTo
     {

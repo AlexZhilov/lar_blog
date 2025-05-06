@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Services\Blog;
 
-
+use App\Http\Requests\Admin\Blog\PostRequest;
 use App\Models\Blog\Post;
 use App\Models\Blog\Tag;
 use App\UseCases\Files\ImageService;
@@ -19,13 +18,10 @@ class PostService
         $this->images = $images;
     }
 
-    /**
-     * @param $data
-     * @return Post
-     */
-    public function store($data)
+    public function store(PostRequest $request): Post
     {
-        return DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($request) {
+            $data = collect($request->validated());
 
             $tags = $data->pull('tag');
             Tag::createNew($tags);
@@ -42,13 +38,10 @@ class PostService
         });
     }
 
-    /**
-     * @param $data
-     * @param Post $post
-     */
-    public function update($data, Post $post)
+    public function update(PostRequest $request, Post $post): Post
     {
-        DB::transaction(function () use ($data, $post) {
+        return DB::transaction(function () use ($request, $post) {
+            $data = collect($request->validated());
             //tags
             $tags = $data->pull('tag');
             Tag::createNew($tags);
@@ -60,14 +53,10 @@ class PostService
 
             $post->update($data->toArray());
 
-            //        dd($data);
+            return $post;
         });
-
     }
 
-    /**
-     * @param Post $post
-     */
     public function delete(Post $post)
     {
         $post->delete();

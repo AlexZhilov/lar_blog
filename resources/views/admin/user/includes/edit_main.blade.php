@@ -13,7 +13,7 @@
             </li>
             <li>
                 @if($user->exists)
-                    @if($user->active)
+                    @if($user->isActive())
                         <div class="badge bg-success text-white m-2 mt-3">Активен</div>
                     @else
                         <div class="badge bg-secondary text-white m-2 mt-3">Неактивен</div>
@@ -50,22 +50,23 @@
 
 
                 <div class="row">
+
                     <div class="col-md-6">
-
-                        <label for="select-tags" class="form-label">Роли</label>
-                        <select multiple id="select-tags" class="multi-select2-only-choose form-control" name="roles[]">
-
+                        <x-admin.form.select for="select-roles" name="roles[]" title="Роли" multiple>
                             @foreach($roles as $id => $name)
-                                @php /** @var $tag \App\Models\Blog\Tag */ @endphp
-                                <option
-                                        @foreach($user->roles as $role)
-                                        {{ $role->id == $id ? 'selected' : ''}}
-                                        @endforeach
-                                        value="{{ $id }}"
-                                >{{ $name }}</option>
+                                <option @foreach($user->roles as $role) {{ $role->id === $id ? 'selected' : ''}} @endforeach value="{{ $id }}">{{ $name }}</option>
                             @endforeach
-                        </select>
+                        </x-admin.form.select>
                     </div>
+
+                    <div class="col-md-6">
+                        <x-admin.form.select for="select-permissions" name="permissions[]" title="Права" multiple>
+                            @foreach($permissions as $id => $name)
+                                <option @foreach($user->permissions as $permission) {{ $permission->id === $id ? 'selected' : ''}} @endforeach value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </x-admin.form.select>
+                    </div>
+
                 </div>
 
                 <div class="row">

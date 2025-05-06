@@ -68,7 +68,7 @@ return [
 
     'links' => [
         public_path( config('project.dir_storage') ) => storage_path('app'),
-//        public_path('images') => storage_path('app/public/images'),
+        public_path('images') => storage_path('app/public/images'),
     ],
 
 ];

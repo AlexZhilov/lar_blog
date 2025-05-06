@@ -127,6 +127,7 @@
                             name="tag[]"
                             title="Теги"
                             multiple
+                            tags
                     >
                         @foreach($tags as $id => $tag)
                             <option

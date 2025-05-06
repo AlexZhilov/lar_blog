@@ -17,16 +17,16 @@ class PostFactory extends Factory
      */
     public function definition()
     {
-        $title = $this->faker->unique()->sentence(random_int(1,5));
-        $content = $this->faker->realText();
+        $title = $this->faker->unique()->realText(50);
+        $content = $this->faker->realText(2000);
         $is_published = random_int(1,10) > 1;
         $created_at = $this->faker->dateTimeBetween('-5 weeks', '-1 weeks');
 
         return [
             'category_id' => Category::count() > 0 ? Category::get()->random() : 1,
             'user_id' => User::get()->random(),
-            'slug' => Str::slug($title),
             'title' => $title,
+            'slug' => Str::slug($title),
             'excerpt' => Str::limit($content, 255),
             'content' => $content,
             'is_published' => $is_published,

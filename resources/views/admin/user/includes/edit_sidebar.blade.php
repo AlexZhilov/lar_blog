@@ -10,6 +10,12 @@
                 <label for="disabledTextInput" class="form-label">Редактировано:</label>
                 <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->updated_at }}" disabled>
             @endif
+
+            @if( $user->last_activity )
+                <label for="disabledTextInput" class="form-label">Последняя активность:</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->last_activity_format }}" disabled>
+            @endif
+
         </div>
     </div>
 
@@ -21,8 +27,8 @@
 
         <div class="mt-3 form-check">
             <input type="hidden" name="active" value="0">
-            <input type="checkbox" class="form-check-input switch-checkbox" id="active" name="active" {{ $user->active ? 'checked="checked"' : '' }} value="1">
-            <label class="form-check-label" for="active">{{ $user->active ? 'Активен' : 'Деактивирован'}}</label>
+            <input type="checkbox" class="form-check-input switch-checkbox" id="active" name="active" {{ $user->isActive() ? 'checked="checked"' : '' }} value="1">
+            <label class="form-check-label" for="active">{{ $user->isActive() ? 'Активен ' . $user->email_verified_at  : 'Неактивен'}}</label>
         </div>
     </div>
 

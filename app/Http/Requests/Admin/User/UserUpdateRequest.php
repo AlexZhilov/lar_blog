@@ -20,6 +20,7 @@ class UserUpdateRequest extends FormRequest
             'active' => ['boolean'],
             'avatar' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
             'roles' => ['array', 'required', 'exists:roles,id'],
+            'permissions' => ['array', 'nullable', 'exists:permissions,id'],
         ];
     }
 }

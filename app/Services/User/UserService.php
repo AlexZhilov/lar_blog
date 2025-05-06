@@ -19,34 +19,58 @@ class UserService
         $this->image = $image;
     }
 
-    public function update(UserUpdateRequest $request, User $user)
+    /**
+     * @throws \Throwable
+     */
+    public function update(UserUpdateRequest $request, User $user): User
     {
-        $data = collect($request->validated());
-
-//        dd($data);
-        DB::transaction(function () use ($data, $user) {
-
+        return DB::transaction(function () use ($request, $user) {
+            $data = collect($request->validated());
+//            dd($data);
             $user->roles()->sync( $data->pull('roles') );
-            //avatar
-            if ($data->has('avatar')) {
-                $data->put('avatar', $this->saveImage($data->pull('avatar'), $user->id));
-            }
-            // activate
-            if ($data->has('active')) {
-                $data->put('email_verified_at', $data->get('active') ? now() : null);
+            $user->permissions()->sync( $data->pull('permissions') );
+
+            $data->put('avatar', $this->saveImage($data->pull('avatar'), $user->id));
+
+           // activate
+            $activate = $data->pull('active');
+            if ((!$user->isActive() && $activate) || ($user->isActive() && !$activate)) {
+                $data->put('email_verified_at', $activate ? now() : null);
             }
             //password
             if ($pass = $data->pull('password')) {
                 $data->put('password', bcrypt($pass));
             }
-
             $user->update($data->toArray());
+
+            return $user;
         });
     }
 
     /**
-     * @param Post $post
+     * @throws \Throwable
      */
+    public function store(UserCreateRequest $request): User
+    {
+        return DB::transaction(function () use ($request) {
+            $data = collect($request->validated());
+
+            $roles = $data->pull('roles');
+            $permissions = $data->pull('permissions');
+
+            $data->put('email_verified_at', $data->pull('active') ? now() : null);
+            $data->put('password', bcrypt($data->pull('password')));
+            $data->put('avatar', $this->saveImage($data->pull('avatar')));
+
+            $user = User::create($data->toArray());
+
+            $user->roles()->attach($roles);
+            $user->permissions()->attach($permissions);
+
+            return $user;
+        });
+    }
+
     public function delete(User $user): void
     {
         // нельзя удалить админа
@@ -66,10 +90,19 @@ class UserService
     {
         Storage::delete(storage_image($user->avatar));
         $user->update(['avatar' => '']);
+
+        return [
+            'message' =>  __('Image deleted'),
+            'status' => 'success',
+            'data' => $user
+        ];
     }
 
     private function saveImage($fileImage, $prefix_id = '')
     {
+        if (!$fileImage) {
+            return null;
+        }
         return $this->image
                 ->file( $fileImage )
                 ->dir('user')
@@ -79,9 +112,5 @@ class UserService
                 ->upload(false)['user'];
     }
 
-    public function store(UserCreateRequest $request)
-    {
-        return User::create($request->all());
-    }
 
 }

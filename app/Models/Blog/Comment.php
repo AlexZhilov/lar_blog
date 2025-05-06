@@ -28,6 +28,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Comment wherePostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUserId($value)
+ * @property-read \App\Models\Blog\Post|null $post
+ * @method static \Illuminate\Database\Eloquent\Builder|Comment onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Comment withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Comment withoutTrashed()
  * @mixin \Eloquent
  */
 class Comment extends Model

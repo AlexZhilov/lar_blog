@@ -214,6 +214,9 @@
 </header>
 <!-- Header Section End -->
 
+{{--flush-messages--}}
+@include('vendor.flash.message')
+
 {{ Breadcrumbs::render() }}
 
 @yield('content')

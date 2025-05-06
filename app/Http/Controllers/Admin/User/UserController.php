@@ -5,124 +5,84 @@ namespace App\Http\Controllers\Admin\User;
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Admin\User\UserCreateRequest;
 use App\Http\Requests\Admin\User\UserUpdateRequest;
-use App\Models\User\Permission;
-use App\Models\User\Role;
 use App\Models\User\User;
 use App\Repositories\User\PermissionRepository;
 use App\Repositories\User\RoleRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\User\UserService;
-use App\Http\Requests\Admin\User\Request as UserRequest;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends BaseController
 {
-    private $userRepository;
-    private $roleRepository;
-    private $permissionRepository;
+    private $users;
+    private $roles;
+    private $permissions;
 
     public function __construct(
-        UserService $service,
-        UserRepository $userRepository,
-        RoleRepository $roleRepository,
-        PermissionRepository $permissionRepository
+        UserService          $service,
+        UserRepository       $users,
+        RoleRepository       $roles,
+        PermissionRepository $permissions
     )
     {
         $this->service = $service;
-        $this->userRepository = $userRepository;
-        $this->roleRepository = $roleRepository;
-        $this->permissionRepository = $permissionRepository;
+        $this->users = $users;
+        $this->roles = $roles;
+        $this->permissions = $permissions;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function index()
+    public function index(Request $request)
     {
         return view('admin.user.index', [
-            'users' => $this->userRepository->getAllWithRoleAndPaginate()
+            'users' => $this->users->getAllWithPaginate($request),
+            'roles' => $this->roles->getList(),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
     public function create(User $user)
     {
         return view('admin.user.store', [
             'user' => $user,
-            'roles' => $this->roleRepository->getList(),
-            'permission' => Permission::pluck('name', 'id'),
+            'roles' => $this->roles->getList(),
+            'permissions' => $this->permissions->getList(),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(UserCreateRequest $request)
     {
-        //
+        $user = $this->service->store($request);
+        return redirect()->route('admin.user.edit', $user->id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Application|Factory|View
-     */
     public function edit(User $user)
     {
-        return view('admin.user.store', [
+        return view('admin.user.update', [
             'user' => $user,
-            'roles' => $this->roleRepository->getList(),
-            'permission' => Permission::pluck('name', 'id'),
+            'roles' => $this->roles->getList(),
+            'permissions' => $this->permissions->getList(),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UserRequest $request
-     * @param User $user
-     * @return RedirectResponse
-     */
     public function update(UserUpdateRequest $request, User $user)
     {
         $this->service->update($request, $user);
         return redirect()->route('admin.user.edit', $user->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        try {
+            $this->service->delete($user);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+        return redirect()->route('admin.user.index');
     }
 
     public function ajaxAuth()
@@ -133,7 +93,7 @@ class UserController extends BaseController
 
     public function ajaxDeleteImage()
     {
-        $this->service->removeImage($this->userRepository->getById(request('id')));
+        $this->service->removeImage($this->users->getById(request('id')));
     }
 
 }
