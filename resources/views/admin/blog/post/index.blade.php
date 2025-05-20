@@ -1,5 +1,6 @@
 @php
     use App\Models\Blog\Post;
+    use Carbon\Carbon;
 
     /**
      * @var Post[] $posts
@@ -111,7 +112,7 @@
                         <th scope="col">Пользователь</th>
                         <th scope="col">Просмотры</th>
                         <th scope="col">Создано</th>
-                        <th scope="col">Отредактировано</th>
+                        <th scope="col">Дата публикации</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -119,12 +120,12 @@
                     @foreach($posts as $post)
                         <tr {!! !$post->is_published ? 'style="opacity:.3"' : '' !!}>
                             <th scope="row">{{ $post->id }}.</th>
-                            <td>{{ $post->category->title }}</td>
-                            <td><a href="{{ route('admin.blog.post.edit', $post->id) }}">{{ $post->title }}</a></td>
+                            <td>{{ $post->category->title }} </td>
+                            <td><a href="{{ route('admin.blog.post.edit', $post->id) }}">{{ $post->title }}</a> <a href="{{ route('blog.post', [$post->category, $post]) }}" target="_blank"><i class="fas fa-link"></i></a></td>
                             <td>{{ $post->user->name }}</td>
                             <td>{{ $post->views }}</td>
-                            <td>{{ $post->created_at->format('d.m.Y H:m:s') }}</td>
-                            <td>{{ $post->updated_at->format('d.m.Y H:m:s') }}</td>
+                            <td>{{ $post->created_at }}</td>
+                            <td {{ !$post->is_published ? 'style="color:red"' : '' }}>{{ $post->published_at }}</td>
                         </tr>
                     @endforeach
 

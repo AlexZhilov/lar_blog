@@ -25,7 +25,7 @@ class PostObserver
      */
     public function updating(Post $post)
     {
-        if ($post->is_published && empty($post->published_at)) {
+        if ($post->is_active && empty($post->published_at)) {
             $post->published_at = Carbon::now();
         }
     }

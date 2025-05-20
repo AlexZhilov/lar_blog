@@ -14,7 +14,7 @@ class PostRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->post->id ?? '';
+        $id = $this->admin_post->id ?? '';
         return [
             'title' => ['required','string','max:255'],
             'slug' => ["unique:blog_posts,slug,{$id}",/*'alpha_dash',*/'max:255'],
@@ -23,7 +23,8 @@ class PostRequest extends FormRequest
             'excerpt' => ['required','min:5'],
             'content' => ['required','min:5'],
             'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
-            'is_published' => 'boolean',
+            'status' => 'boolean',
+            'views' => ['integer'],
             'tag' => ['array','nullable'],
         ];
     }

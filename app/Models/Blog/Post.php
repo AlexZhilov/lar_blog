@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Date;
 
 /**
  * Class Post
@@ -60,6 +61,10 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static Builder|Post whereImage($value)
  * @method static Builder|Post whereViews($value)
  * @method static Builder|Post published()
+ * @method static Builder|Post slug($slug)
+ * @property int $status
+ * @property-read bool $is_active
+ * @method static Builder|Post whereStatus($value)
  * @mixin \Eloquent
  */
 class Post extends Model
@@ -79,7 +84,41 @@ class Post extends Model
 
     public function scopePublished(Builder $builder): void
     {
-        $builder->where('is_published', true);
+        $builder->where('status', true);
+        $builder->where('published_at', '<=', now());
+    }
+
+    public function scopeSlug(Builder $builder, string $slug): void
+    {
+        $builder->where('slug', $slug);
+    }
+
+
+    #### ACCESSORS ####
+
+    public function getIsActiveAttribute(): bool
+    {
+        return $this->attributes['status'] === 1;
+    }
+
+    public function getIsPublishedAttribute(): bool
+    {
+        return $this->is_active && Date::parse($this->published_at)->isPast();
+    }
+
+    public function getPublishedAtAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y H:i');
+    }
+
+    public function getCreatedAtAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y H:i');
+    }
+
+    public function getUpdatedAtAttribute($value): string
+    {
+        return Carbon::parse($value)->format('d.m.Y H:i');
     }
 
     #### RELATIONS ####
@@ -97,5 +136,29 @@ class Post extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'blog_post_tag');
+    }
+
+    public function attributeNames()
+    {
+        return [
+            'id' => 'ID',
+            'title' => 'Заголовок',
+            'content' => 'Контент',
+            'views' => 'Просмотры',
+            'is_published' => 'Опубликовано',
+            'category_id' => 'Категория',
+            'user_id' => 'Автор',
+            'slug' => 'Slug',
+            'excerpt' => 'Описание',
+            'image' => 'Изображение',
+            'status' => 'Статус',
+            'published_at' => 'Дата публикации',
+        ];
+    }
+
+    public function getAttributeLabel(string $key): string
+    {
+        $names = $this->attributeNames();
+        return $names[$key] ?? ucwords(str_replace('_', ' ', $key));
     }
 }

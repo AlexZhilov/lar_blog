@@ -71,7 +71,7 @@ Route::group([
         ## CATEGORY ##
         Route::resource('category', 'CategoryController')->except(['show']);
         ## POST ##
-        Route::resource('post', 'PostController')->except('show');
+        Route::resource('post', 'PostController')->except('show')->parameters(['post' => 'admin_post']);
         Route::post('post/delete-image', 'PostController@ajaxDeleteImage')->name('post.delete-image');
     });
 

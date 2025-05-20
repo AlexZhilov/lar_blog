@@ -41,9 +41,9 @@ Breadcrumbs::register('admin.blog.post.create', function (Crumbs $crumbs) {
     $crumbs->push('Create post', route('admin.blog.post.create'));
 });
 
-Breadcrumbs::register('admin.blog.post.edit', function (Crumbs $crumbs, Post $post) {
+Breadcrumbs::register('admin.blog.post.edit', function (Crumbs $crumbs, Post $admin_post) {
     $crumbs->parent('admin.blog.post.index');
-    $crumbs->push($post->title, route('admin.blog.post.edit', $post));
+    $crumbs->push($admin_post->title, route('admin.blog.post.edit', $admin_post));
 });
 
 #### BLOG CATEGORY ####

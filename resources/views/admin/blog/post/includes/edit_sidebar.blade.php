@@ -11,13 +11,22 @@
                 <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->updated_at }}" disabled>
             @endif
 
-            @if( $post->is_published )
-                <label for="disabledTextInput" class="form-label">Опубликовано:</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->updated_at->diffForHumans() }}" disabled>
+            @if( $post->published_at )
+
+                <x-admin.form.input
+                    name="published_at"
+                    class="datepicker-input"
+                    :value="$post->published_at"
+                    type="text"
+                    :title="$post->getAttributeLabel('published_at')"/>
             @endif
 
-            <label for="disabledTextInput" class="form-label">Просмотры:</label>
-            <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $post->views }}" disabled>
+            <x-admin.form.input
+                name="views"
+                type="number"
+                :value="$post->views"
+                title="Просмотры"/>
+
 
             <x-admin.form.select class="mt-3" name="user_id" :title="__('Author')" required>
                 <option>{{ __('Choose...') }}</option>
@@ -45,9 +54,9 @@
     <div class="card-body text-center">
 
         <div class="mt-3 form-check">
-            <input type="hidden" name="is_published" value="0">
-            <input type="checkbox" class="form-check-input switch-checkbox" id="is_published" name="is_published" {{ $post->is_published ? 'checked="checked"' : '' }} value="1">
-            <label class="form-check-label" for="is_published">{{ $post->is_published ? 'Опубликовано' : 'Скрыто'}}</label>
+            <input type="hidden" name="status" value="0">
+            <input type="checkbox" class="form-check-input switch-checkbox" id="status" name="status" {{ $post->status ? 'checked="checked"' : '' }} value="1">
+            <label class="form-check-label" for="status">{{ $post->status ? 'Опубликовано' : 'Скрыто'}}</label>
         </div>
     </div>
 

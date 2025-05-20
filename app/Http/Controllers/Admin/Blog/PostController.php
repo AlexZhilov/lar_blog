@@ -42,15 +42,18 @@ class PostController extends BaseController
         ]);
     }
 
-    public function create(Post $post)
+    public function create(Post $admin_post)
     {
         return view('admin.blog.post.store', [
-            'post' => $post,
+            'post' => $admin_post,
             'tags' => Tag::pluck('title', 'id'),
             'categories' => $this->categories->getAllForDropList()
         ]);
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function store(PostRequest $request): RedirectResponse
     {
         $post = $this->service->store($request);
@@ -62,21 +65,20 @@ class PostController extends BaseController
         dd(__METHOD__);
     }
 
-    public function edit(Post $post)
+    public function edit(Post $admin_post)
     {
         return view('admin.blog.post.store', [
-            'post' => $post,
+            'post' => $admin_post,
             'categories' => $this->categories->getAllForDropList(),
             'tags' => Tag::pluck('title', 'id'),
             'users' => $this->users->getAllForDropList()
         ]);
     }
 
-    public function update(PostRequest $request, Post $post)
+    public function update(PostRequest $request, Post $admin_post)
     {
-//        dd($request->file('image'));
-        $this->service->update($request, $post);
-        return redirect()->route('admin.blog.post.edit', $post->id);
+        $this->service->update($request, $admin_post);
+        return redirect()->route('admin.blog.post.edit', $admin_post->id);
     }
 
     public function destroy(Post $post)

@@ -22,7 +22,7 @@
             </li>
             <li>
                 @if($post->exists)
-                    @if($post->is_published)
+                    @if($post->is_active)
                         <div class="badge bg-success text-white m-2 mt-3">Опубликовано</div>
                     @else
                         <div class="badge bg-secondary text-white m-2 mt-3">Скрыто</div>

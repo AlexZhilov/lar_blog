@@ -18,6 +18,9 @@ class PostService
         $this->images = $images;
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function store(PostRequest $request): Post
     {
         return DB::transaction(function () use ($request) {

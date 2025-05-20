@@ -26,7 +26,7 @@ class CreateBlogPostsTable extends Migration
             $table->string('image')->nullable();
             $table->unsignedBigInteger('views')->default(0);
 
-            $table->boolean('is_published')->default(false);
+            $table->boolean('status')->default(false);
             $table->timestamp('published_at')->nullable()->index('published_at');
 
             $table->softDeletes();
